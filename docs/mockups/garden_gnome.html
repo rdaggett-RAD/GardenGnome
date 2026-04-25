@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garden Gnome</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f5ecd3;
+  --paper-warm: #ebe0be;
+  --paper-ivory: #faf3de;
+  --cream: #fdf6e4;
+  --forest: #3d4f2a;
+  --forest-deep: #2a3820;
+  --ivy: #556b3a;
+  --moss: #7a8c5a;
+  --terra: #b5552a;
+  --terra-deep: #8b3e1d;
+  --rust: #9e5436;
+  --stone: #d0c49f;
+  --stone-soft: #dfd3ad;
+  --ink: #2e2a1f;
+  --ink-soft: #6b5f45;
+  --ink-muted: #8a7e62;
+  --serif: 'Fraunces', 'Baskerville', Georgia, serif;
+  --sans: 'DM Sans', -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* ============ HEADER ============ */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 36px;
+  border-bottom: 1px solid var(--stone);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 22px;
+  color: var(--forest-deep);
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.brand-tag {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--terra);
+  margin-top: 2px;
+  display: block;
+}
+
+.step-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.step-pill {
+  width: 28px;
+  height: 4px;
+  background: var(--stone);
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+
+.step-pill.on {
+  background: var(--ivy);
+}
+
+.step-pill.current {
+  background: var(--terra);
+  width: 40px;
+}
+
+.step-label {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-left: 4px;
+}
+
+/* ============ CONTENT ============ */
+.content {
+  padding: 44px 36px 32px;
+}
+
+.page-intro {
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  color: var(--terra);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 38px;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--forest-deep);
+  margin: 0 0 8px;
+}
+
+h1 em {
+  font-style: italic;
+  color: var(--terra);
+  font-weight: 400;
+}
+
+.deck {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 620px;
+  line-height: 1.55;
+}
+
+h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--forest);
+  margin: 0 0 12px;
+  letter-spacing: 0;
+}
+
+/* ============ GNOME NOTE ============ */
+.gnome-note {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 16px;
+  margin: 24px 0;
+  padding: 16px 18px;
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-left: 3px solid var(--ivy);
+}
+
+.gnome-note-avatar {
+  width: 52px;
+  height: 62px;
+}
+
+.gnome-note-label {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--terra);
+  margin-bottom: 3px;
+}
+
+.gnome-note-body {
+  font-family: var(--serif);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--forest-deep);
+  margin: 0;
+}
+
+.gnome-note-body strong {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--terra);
+}
+
+/* ============ FORM BITS ============ */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 14px 18px;
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-radius: 4px;
+}
+
+input[type="text"] {
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--forest);
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--forest-deep);
+  padding: 2px 4px;
+  width: 100px;
+  outline: none;
+}
+
+input[type="text"]:focus { border-bottom-color: var(--terra); }
+
+.row-info {
+  font-family: var(--serif);
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.row-info strong {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--forest-deep);
+}
+
+.note {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--moss);
+  letter-spacing: 0.04em;
+  margin-top: 6px;
+  padding-left: 12px;
+  border-left: 2px solid var(--stone-soft);
+}
+
+select {
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  color: var(--forest-deep);
+  padding: 9px 12px;
+  font-size: 14px;
+  font-family: var(--serif);
+  border-radius: 4px;
+  width: 100%;
+}
+
+.section {
+  margin-bottom: 28px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+}
+
+.section-aside {
+  font-family: var(--sans);
+  font-size: 10px;
+  color: var(--ink-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.beds {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bed-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.3fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.bed-name { font-weight: 500; color: var(--forest-deep); }
+.bed-meta { color: var(--ink-soft); font-style: italic; font-size: 13.5px; }
+.bed-edit { font-family: var(--serif); font-style: italic; color: var(--terra); font-size: 12px; cursor: pointer; }
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin: 28px 0;
+}
+
+.chk-list { display: flex; flex-direction: column; gap: 8px; }
+
+label.chk {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--serif);
+  font-size: 15px;
+  color: var(--forest-deep);
+  cursor: pointer;
+  padding: 2px 0;
+}
+
+input[type="checkbox"], input[type="radio"] {
+  accent-color: var(--ivy);
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+}
+
+/* ============ BUTTONS ============ */
+.btn {
+  background: transparent;
+  border: 1.5px solid var(--ivy);
+  color: var(--forest);
+  border-radius: 999px;
+  padding: 10px 22px;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: var(--serif);
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.btn:hover { background: var(--ivy); color: var(--cream); }
+
+.btn.primary {
+  background: var(--terra);
+  border-color: var(--terra);
+  color: var(--cream);
+}
+
+.btn.primary:hover { background: var(--terra-deep); border-color: var(--terra-deep); }
+
+.btn.ghost { border-color: var(--stone); color: var(--ink-soft); }
+.btn.ghost:hover { border-color: var(--ivy); background: transparent; color: var(--forest); }
+
+.btn.small { padding: 6px 14px; font-size: 13px; }
+
+/* ============ FOOTER ============ */
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 36px;
+  border-top: 1px solid var(--stone);
+}
+
+.footer .spacer { flex: 1; }
+
+.page-num {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink-muted);
+  font-size: 13px;
+}
+
+/* ============ PHOTOS ============ */
+.photo {
+  background-size: cover;
+  background-position: center;
+  background-color: #a8a884;
+  position: relative;
+}
+
+/* ============ TEMPLATES (STEP 2) ============ */
+.tpl-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.tpl-card {
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+
+.tpl-card:hover { border-color: var(--ivy); transform: translateY(-1px); }
+
+.tpl-card.selected {
+  border: 2px solid var(--terra);
+}
+
+.tpl-card.selected::before {
+  content: 'chosen';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: var(--terra);
+  color: var(--cream);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 11px;
+  padding: 2px 9px;
+  border-radius: 2px;
+  z-index: 2;
+}
+
+.tpl-photo { aspect-ratio: 4 / 3; filter: saturate(0.95); }
+.tpl-card:hover .tpl-photo { filter: saturate(1.05); }
+
+.tpl-info { padding: 12px 14px; }
+
+.tpl-name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 17px;
+  color: var(--forest-deep);
+  margin-bottom: 2px;
+  letter-spacing: -0.005em;
+}
+
+.tpl-desc {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.divider .line { flex: 1; height: 1px; background: var(--stone); }
+.divider .or { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-muted); }
+
+/* ============ PLANTS (STEP 3) ============ */
+.search-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 240px;
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-family: var(--serif);
+  color: var(--forest-deep);
+  outline: none;
+}
+
+.search-input::placeholder { color: var(--ink-muted); font-style: italic; }
+.search-input:focus { border-color: var(--ivy); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  font-size: 12px;
+  background: var(--paper-ivory);
+  color: var(--forest);
+  border: 1px solid var(--stone-soft);
+  border-radius: 999px;
+  font-family: var(--serif);
+  font-style: italic;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chip:hover, .chip.active { background: var(--ivy); color: var(--cream); border-color: var(--ivy); }
+
+.plant-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.plant-card {
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  flex-direction: column;
+}
+
+.plant-card:hover { border-color: var(--ivy); }
+.plant-card.selected { border: 2px solid var(--ivy); }
+
+.plant-photo { aspect-ratio: 4 / 3; filter: saturate(0.95); }
+.plant-card:hover .plant-photo { filter: saturate(1.05); }
+
+.plant-info { padding: 10px 12px; }
+
+.plant-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.plant-name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--forest-deep);
+  letter-spacing: -0.005em;
+}
+
+.plant-count {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--terra);
+}
+
+.plant-count.add { color: var(--moss); }
+
+.plant-variety {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--rust);
+  margin-bottom: 4px;
+}
+
+.plant-meta {
+  font-family: var(--sans);
+  font-size: 10px;
+  color: var(--ink-muted);
+  letter-spacing: 0.03em;
+}
+
+.capacity {
+  padding: 12px 16px;
+  background: var(--paper-ivory);
+  border: 1px dashed var(--ivy);
+  border-radius: 4px;
+  font-family: var(--serif);
+  font-size: 14px;
+  color: var(--forest-deep);
+  text-align: center;
+}
+
+.capacity em { font-style: italic; color: var(--terra); font-weight: 500; }
+
+/* ============ LAYOUT (STEP 4) ============ */
+.layout-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.bed-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--stone-soft);
+}
+
+.bed-head-title { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--forest-deep); }
+.bed-head-compass { font-family: var(--sans); font-size: 10px; letter-spacing: 0.2em; color: var(--ink-muted); text-transform: uppercase; }
+
+.bed-frame {
+  background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80&auto=format&fit=crop');
+  background-size: cover;
+  background-color: #6b5a3a;
+  padding: 12px;
+  border: 6px solid #4a3a22;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.4), 0 3px 10px rgba(0,0,0,0.15);
+  position: relative;
+  border-radius: 4px;
+}
+
+.bed-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+}
+
+.bed-cell {
+  aspect-ratio: 1;
+  background-size: cover;
+  background-position: center;
+  background-color: #7a6142;
+  cursor: pointer;
+  transition: transform 0.15s;
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+  border-radius: 3px;
+}
+
+.bed-cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0.15) 100%);
+  pointer-events: none;
+  border-radius: 3px;
+}
+
+.bed-cell:hover {
+  transform: scale(1.1);
+  z-index: 3;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+}
+
+.bed-cell.active {
+  box-shadow: 0 0 0 2px var(--terra), 0 4px 12px rgba(0,0,0,0.25);
+  z-index: 4;
+}
+
+.legend {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 14px;
+  padding: 12px 14px;
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-radius: 4px;
+}
+
+.legend-item { display: inline-flex; align-items: center; gap: 8px; font-family: var(--serif); font-size: 13px; color: var(--forest-deep); }
+.legend-swatch { width: 18px; height: 18px; background-size: cover; background-position: center; border-radius: 3px; flex-shrink: 0; }
+
+.detail {
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-photo { aspect-ratio: 5 / 3; }
+.detail-body { padding: 16px 18px 18px; }
+
+.detail-name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--forest-deep);
+  letter-spacing: -0.015em;
+  margin-bottom: 2px;
+}
+
+.detail-variety { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--rust); }
+.detail-taxon { font-family: var(--sans); font-size: 10px; letter-spacing: 0.14em; color: var(--moss); text-transform: uppercase; margin: 6px 0 14px; }
+
+.detail-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 18px;
+  padding: 12px 0;
+  border-top: 1px solid var(--stone-soft);
+  border-bottom: 1px solid var(--stone-soft);
+  margin-bottom: 12px;
+}
+
+.spec-label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--terra);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.spec-value { font-family: var(--serif); font-size: 14px; color: var(--forest-deep); font-weight: 500; line-height: 1.2; }
+
+.detail-why-label { font-family: var(--serif); font-style: italic; font-size: 12px; color: var(--terra); margin-bottom: 4px; }
+.detail-why { font-family: var(--serif); font-size: 13px; line-height: 1.6; color: var(--forest-deep); margin: 0; }
+
+.callout {
+  padding: 12px 16px;
+  font-family: var(--serif);
+  font-size: 13.5px;
+  color: var(--forest-deep);
+  line-height: 1.55;
+  border: 1px solid var(--stone-soft);
+  background: var(--paper-ivory);
+  border-radius: 4px;
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.callout.warm { border-left: 3px solid var(--terra); }
+.callout.advice { border-left: 3px solid var(--ivy); }
+.callout em { font-style: italic; color: var(--terra); font-weight: 500; }
+.callout-icon { flex-shrink: 0; margin-top: 1px; }
+
+/* ============ PRINTABLES (STEP 5) ============ */
+.printables {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.printable {
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  gap: 14px;
+  transition: all 0.15s;
+}
+
+.printable:hover { border-color: var(--ivy); }
+
+.printable-thumb {
+  width: 62px;
+  height: 80px;
+  flex-shrink: 0;
+  background-color: var(--cream);
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.printable-body { flex: 1; min-width: 0; }
+
+.printable-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.printable-name { font-family: var(--serif); font-weight: 500; font-size: 15px; color: var(--forest-deep); line-height: 1.2; }
+.printable-desc { font-family: var(--serif); font-style: italic; font-size: 12.5px; color: var(--ink-soft); margin: 3px 0 5px; line-height: 1.5; }
+.printable-meta { font-family: var(--sans); font-size: 10px; color: var(--moss); letter-spacing: 0.08em; }
+
+.extras {
+  padding: 16px 18px;
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-left: 3px solid var(--ivy);
+  border-radius: 4px;
+}
+
+.extras-heading { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--terra); margin-bottom: 10px; }
+
+/* ============ ANIMATIONS ============ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-content { animation: fadeUp 0.35s ease-out; }
+.step-content > * { animation: fadeUp 0.45s ease-out both; }
+.step-content > *:nth-child(1) { animation-delay: 0s; }
+.step-content > *:nth-child(2) { animation-delay: 0.07s; }
+.step-content > *:nth-child(3) { animation-delay: 0.14s; }
+.step-content > *:nth-child(4) { animation-delay: 0.21s; }
+.step-content > *:nth-child(5) { animation-delay: 0.28s; }
+
+@media (max-width: 820px) {
+  .content { padding: 28px 20px 24px; }
+  .header { padding: 16px 20px; }
+  .footer { padding: 16px 20px; }
+  h1 { font-size: 28px; }
+  .tpl-grid, .plant-grid { grid-template-columns: 1fr 1fr; }
+  .printables, .layout-grid, .two-col, .legend { grid-template-columns: 1fr; }
+  .bed-row { grid-template-columns: 1fr 1fr; gap: 4px; font-size: 13px; }
+  .step-pills { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <div class="brand">
+      <svg class="brand-icon" viewBox="0 0 80 100">
+        <ellipse cx="40" cy="96" rx="18" ry="2" fill="#8b6f47" opacity="0.3"/>
+        <path d="M40 8 Q 20 42, 16 46 L 64 46 Q 60 42, 40 8 Z" fill="#b5552a"/>
+        <ellipse cx="40" cy="47" rx="24" ry="2.5" fill="#8b3e1d"/>
+        <circle cx="40" cy="10" r="3" fill="#f3e9c9"/>
+        <ellipse cx="40" cy="52" rx="13" ry="10" fill="#e8c4a0"/>
+        <path d="M24 49 Q 22 72, 40 76 Q 58 72, 56 49 Q 53 64, 40 66 Q 27 64, 24 49 Z" fill="#f3e9c9"/>
+        <path d="M31 54 Q 40 57, 49 54 Q 43 59, 40 59 Q 37 59, 31 54 Z" fill="#f3e9c9"/>
+        <circle cx="40" cy="53" r="3" fill="#d98e7e"/>
+        <path d="M33 47 Q 35 48.5, 37 47 M 43 47 Q 45 48.5, 47 47" stroke="#2a4428" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M27 73 Q 25 92, 40 94 Q 55 92, 53 73 Z" fill="#556b3a"/>
+        <rect x="29" y="86" width="22" height="2.8" fill="#2e2a1f"/>
+        <path d="M28 79 L 20 83 M 52 79 L 60 83" stroke="#556b3a" stroke-width="3.5" stroke-linecap="round"/>
+        <ellipse cx="34" cy="96" rx="5.5" ry="2.5" fill="#2e2a1f"/>
+        <ellipse cx="46" cy="96" rx="5.5" ry="2.5" fill="#2e2a1f"/>
+      </svg>
+      <div>
+        <div class="brand-name">Garden Gnome</div>
+        <span class="brand-tag">your friendly gardener's friend</span>
+      </div>
+    </div>
+    <div class="step-pills" id="pills"></div>
+  </header>
+
+  <main id="main" class="content"></main>
+
+  <footer class="footer">
+    <button class="btn ghost" id="back-btn">← Back</button>
+    <div class="spacer"></div>
+    <span class="page-num" id="page-num"></span>
+    <div class="spacer"></div>
+    <button class="btn primary" id="next-btn"></button>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+'use strict';
+
+var state = { step: 1, selectedPlant: 'T', selectedTemplate: 1 };
+
+var PARTS = [
+  { name: 'Your place', title: 'Tell me about your <em>patch</em>.', deck: "A few quick things and I'll take it from there — the tedious parts like frost dates and zones are mine to handle." },
+  { name: 'Your goals', title: 'What are you <em>growing</em> for?', deck: 'Pick a starting point, or start blank. You can change anything.' },
+  { name: 'Your plants', title: "Here's what I'd <em>plant</em>.", deck: 'An Italian kitchen, seeded with plants that thrive together. Swap freely.' },
+  { name: 'Your plan', title: 'Your garden, <em>fully drawn</em>.', deck: '32 plants, laid out so they thrive — and so you won\'t.' },
+  { name: 'Your packet', title: '<em>Take it</em> outside with you.', deck: 'A packet for the binder, fridge, or garden shed. Ready when you are.' }
+];
+
+var CTAS = ['Continue →', 'Pick my plants →', 'Design my garden →', 'Print my packet →', 'Download packet ↓'];
+
+var PLANTS = {
+  T: { name: 'Tomato', variety: 'Cherokee Purple', taxon: 'Solanum lycopersicum', sun: 'Full sun', water: 'Deep, regular', space: '24 inches apart', days: '75 days', start: 'May 15', yieldAmt: '8-12 lb per plant', why: "North side, where height does no harm. I put basil right below — not just for the flavor, but because they ward off each other's pests. An old gardener's trick.", photo: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=600&q=80&auto=format&fit=crop', cell: 'https://images.unsplash.com/photo-1607305387299-a3d9611cd469?w=200&q=80&auto=format&fit=crop' },
+  B: { name: 'Basil', variety: 'Genovese', taxon: 'Ocimum basilicum', sun: 'Full sun', water: 'Moderate', space: '12 inches apart', days: '60 days', start: 'May 15', yieldAmt: 'Weekly harvests', why: "Tomato's faithful companion since Roman times. Same water, same sun — both taste better for the company. Pinch the flowering tips and you'll harvest all summer.", photo: 'https://images.unsplash.com/photo-1618375569909-3c8616cf7733?w=600&q=80&auto=format&fit=crop', cell: 'https://images.unsplash.com/photo-1618375569909-3c8616cf7733?w=200&q=80&auto=format&fit=crop' },
+  P: { name: 'Pepper', variety: 'Jalapeño', taxon: 'Capsicum annuum', sun: 'Full sun', water: 'Moderate', space: '18 inches apart', days: '70 days', start: 'May 20', yieldAmt: '25-35 peppers', why: "Grouped with the nightshade cousins for rotation. Morning sun from the east, afternoon shelter from the taller tomatoes — ideal for fruit set.", photo: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80&auto=format&fit=crop', cell: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=200&q=80&auto=format&fit=crop' },
+  L: { name: 'Lettuce', variety: 'Buttercrunch', taxon: 'Lactuca sativa', sun: 'Partial shade', water: 'Frequent, light', space: '8 inches apart', days: '50 days', start: 'April 1', yieldAmt: '6 tender heads', why: "Tucked beneath the tomatoes, which throw a cool shadow by July. Harvested before the heat turns it bitter, freeing the space for succession.", photo: 'https://images.unsplash.com/photo-1621263810614-aa1edddb2eaf?w=600&q=80&auto=format&fit=crop', cell: 'https://images.unsplash.com/photo-1621263810614-aa1edddb2eaf?w=200&q=80&auto=format&fit=crop' },
+  C: { name: 'Carrot', variety: 'Nantes', taxon: 'Daucus carota', sun: 'Full sun', water: 'Even, moderate', space: '3 inches apart', days: '70 days', start: 'April 10', yieldAmt: 'About 80 roots', why: "A deep patch of their own, far from the tomatoes. Sixteen per square foot — that density forces them down straight, not forking or stunting.", photo: 'https://images.unsplash.com/photo-1447175008436-054170c2e979?w=600&q=80&auto=format&fit=crop', cell: 'https://images.unsplash.com/photo-1447175008436-054170c2e979?w=200&q=80&auto=format&fit=crop' },
+  N: { name: 'Bush beans', variety: 'Provider', taxon: 'Phaseolus vulgaris', sun: 'Full sun', water: 'Moderate', space: '4 inches apart', days: '55 days', start: 'May 20', yieldAmt: 'About 8 lb of pods', why: "South edge, where nothing overshadows them. Their quiet gift: as legumes, they fix nitrogen into your soil, feeding next year's crop without a word.", photo: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&q=80&auto=format&fit=crop', cell: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=200&q=80&auto=format&fit=crop' },
+  M: { name: 'Marigold', variety: 'French', taxon: 'Tagetes patula', sun: 'Full sun', water: 'Low', space: '10 inches apart', days: '50 days', start: 'May 15', yieldAmt: 'Blooms until frost', why: "Planted along the vulnerable north edge — the scent repels rabbits, and their roots release a compound that deters nematodes in the soil. Beautiful AND functional.", photo: 'https://images.unsplash.com/photo-1599945443901-c39f0d7bb51c?w=600&q=80&auto=format&fit=crop', cell: 'https://images.unsplash.com/photo-1599945443901-c39f0d7bb51c?w=200&q=80&auto=format&fit=crop' }
+};
+
+function gnomeMiniSvg() {
+  return '<svg viewBox="0 0 80 100" width="100%" height="100%">' +
+    '<ellipse cx="40" cy="96" rx="18" ry="2" fill="#8b6f47" opacity="0.3"/>' +
+    '<path d="M40 8 Q 20 42, 16 46 L 64 46 Q 60 42, 40 8 Z" fill="#b5552a"/>' +
+    '<ellipse cx="40" cy="47" rx="24" ry="2.5" fill="#8b3e1d"/>' +
+    '<circle cx="40" cy="10" r="3" fill="#f3e9c9"/>' +
+    '<ellipse cx="40" cy="52" rx="13" ry="10" fill="#e8c4a0"/>' +
+    '<path d="M24 49 Q 22 72, 40 76 Q 58 72, 56 49 Q 53 64, 40 66 Q 27 64, 24 49 Z" fill="#f3e9c9"/>' +
+    '<path d="M31 54 Q 40 57, 49 54 Q 43 59, 40 59 Q 37 59, 31 54 Z" fill="#f3e9c9"/>' +
+    '<circle cx="40" cy="53" r="3" fill="#d98e7e"/>' +
+    '<path d="M33 47 Q 35 48.5, 37 47 M 43 47 Q 45 48.5, 47 47" stroke="#2a4428" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
+    '<path d="M27 73 Q 25 92, 40 94 Q 55 92, 53 73 Z" fill="#556b3a"/>' +
+    '<rect x="29" y="86" width="22" height="2.8" fill="#2e2a1f"/>' +
+    '<path d="M28 79 L 20 83 M 52 79 L 60 83" stroke="#556b3a" stroke-width="3.5" stroke-linecap="round"/>' +
+    '<ellipse cx="34" cy="96" rx="5.5" ry="2.5" fill="#2e2a1f"/>' +
+    '<ellipse cx="46" cy="96" rx="5.5" ry="2.5" fill="#2e2a1f"/>' +
+  '</svg>';
+}
+
+function pageIntro(step) {
+  var p = PARTS[step - 1];
+  return '<div class="page-intro">' +
+    '<div class="eyebrow">Part ' + (step) + ' of 5 &middot; ' + p.name + '</div>' +
+    '<h1>' + p.title + '</h1>' +
+    '<p class="deck">' + p.deck + '</p>' +
+  '</div>';
+}
+
+function gnomeNote(label, body) {
+  return '<aside class="gnome-note">' +
+    '<div class="gnome-note-avatar">' + gnomeMiniSvg() + '</div>' +
+    '<div>' +
+      '<div class="gnome-note-label">' + label + '</div>' +
+      '<p class="gnome-note-body">' + body + '</p>' +
+    '</div>' +
+  '</aside>';
+}
+
+// ============ STEP 1 ============
+function renderStep1() {
+  var bedRow = function(n, s, t, sn) {
+    return '<div class="bed-row">' +
+      '<span class="bed-name">' + n + '</span>' +
+      '<span class="bed-meta">' + s + '</span>' +
+      '<span class="bed-meta">' + t + '</span>' +
+      '<span class="bed-meta">' + sn + '</span>' +
+      '<span class="bed-edit">edit</span>' +
+    '</div>';
+  };
+
+  return pageIntro(1) +
+    '<div class="section">' +
+      '<h2>Your location</h2>' +
+      '<div class="row">' +
+        'I live at <input type="text" value="61602">' +
+        '<div class="row-info"><strong>Peoria, IL</strong> &middot; USDA Zone 5b &middot; about 165 frost-free days (May 1 – Oct 15)</div>' +
+      '</div>' +
+      '<div class="note">Frost dates from 30 years of NOAA data for your exact ZIP &middot; ± 8 days either side</div>' +
+    '</div>' +
+    gnomeNote("A personal guarantee —", "Your frost dates aren't a rough zone estimate. They come from three decades of actual weather recorded near you. I'd rather be right than convenient.") +
+    '<div class="section">' +
+      '<div class="section-head"><h2>Your beds</h2><span class="section-aside">three at present</span></div>' +
+      '<div class="beds">' +
+        bedRow('Backyard main', '4 × 8 ft', 'Raised', 'Full sun') +
+        bedRow('Side bed', '2 × 10 ft', 'Raised', 'Partial') +
+        bedRow('Kitchen herbs', '2 × 2 ft', 'Container', 'Full sun') +
+      '</div>' +
+      '<button class="btn small" style="margin-top: 10px;">+ Add a bed</button>' +
+    '</div>' +
+    '<div class="two-col">' +
+      '<div><h2>Water access</h2><div class="chk-list">' +
+        '<label class="chk"><input type="radio" name="w"> Drip irrigation</label>' +
+        '<label class="chk"><input type="radio" name="w" checked> Hose with a wand</label>' +
+        '<label class="chk"><input type="radio" name="w"> Watering can only</label>' +
+      '</div></div>' +
+      '<div><h2>Known visitors</h2><div class="chk-list">' +
+        '<label class="chk"><input type="checkbox" checked> Rabbits</label>' +
+        '<label class="chk"><input type="checkbox"> Deer</label>' +
+        '<label class="chk"><input type="checkbox" checked> Squirrels</label>' +
+        '<label class="chk"><input type="checkbox"> Groundhogs</label>' +
+      '</div></div>' +
+    '</div>';
+}
+
+// ============ STEP 2 ============
+function renderStep2() {
+  var templates = [
+    { name: 'Salsa garden', desc: 'Tomato, pepper, cilantro, onion', photo: 'https://images.unsplash.com/photo-1518977822534-7049a61ee0c2?w=500&q=80&auto=format&fit=crop' },
+    { name: 'Italian kitchen', desc: 'Tomato, basil, eggplant, herbs', photo: 'https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=500&q=80&auto=format&fit=crop' },
+    { name: 'Cut flowers', desc: 'Zinnia, cosmos, dahlia', photo: 'https://images.unsplash.com/photo-1527061011665-3652c757a4d4?w=500&q=80&auto=format&fit=crop' },
+    { name: 'Pollinator haven', desc: 'Echinacea, bee balm, milkweed', photo: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=500&q=80&auto=format&fit=crop' },
+    { name: 'Salad bar', desc: 'Lettuce, arugula, radish, carrot', photo: 'https://images.unsplash.com/photo-1621263810614-aa1edddb2eaf?w=500&q=80&auto=format&fit=crop' },
+    { name: "Kids' first garden", desc: 'Beans, cherry tomato, strawberry', photo: 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=500&q=80&auto=format&fit=crop' }
+  ];
+
+  var cards = templates.map(function(t, i) {
+    return '<div class="tpl-card' + (i === state.selectedTemplate ? ' selected' : '') + '" data-tpl="' + i + '">' +
+      '<div class="tpl-photo photo" style="background-image: url(\'' + t.photo + '\');"></div>' +
+      '<div class="tpl-info">' +
+        '<div class="tpl-name">' + t.name + '</div>' +
+        '<div class="tpl-desc">' + t.desc + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  return pageIntro(2) +
+    '<div class="tpl-grid">' + cards + '</div>' +
+    '<div class="divider"><div class="line"></div><span class="or">or, if you\'d rather</span><div class="line"></div></div>' +
+    '<div style="text-align: center; margin-bottom: 28px;"><button class="btn">Start blank &mdash; I\'ll pick my own plants</button></div>' +
+    gnomeNote("A word of encouragement —", "These aren't rigid. Each template is just a starting bouquet. You'll see everything on the next page and can swap freely. <strong>Don't agonize.</strong>") +
+    '<div class="two-col">' +
+      '<div><h2>Your experience</h2><div class="chk-list">' +
+        '<label class="chk"><input type="radio" name="exp"> Just getting started</label>' +
+        '<label class="chk"><input type="radio" name="exp" checked> A few seasons in</label>' +
+        '<label class="chk"><input type="radio" name="exp"> Seasoned grower</label>' +
+      '</div></div>' +
+      '<div><h2>Hours per week</h2><div class="chk-list">' +
+        '<label class="chk"><input type="radio" name="hrs"> 1-2 hours</label>' +
+        '<label class="chk"><input type="radio" name="hrs" checked> 3-5 hours</label>' +
+        '<label class="chk"><input type="radio" name="hrs"> As many as I want</label>' +
+      '</div></div>' +
+    '</div>';
+}
+
+// ============ STEP 3 ============
+function renderStep3() {
+  var list = [
+    { key: 'T', name: 'Tomato', variety: 'Cherokee Purple', meta: '75d · full sun · 1 per sq ft', count: 4, selected: true },
+    { key: 'B', name: 'Basil', variety: 'Genovese', meta: '60d · full sun · 4 per sq ft', count: 4, selected: true },
+    { key: 'P', name: 'Pepper', variety: 'Jalapeño', meta: '70d · full sun · 1 per sq ft', count: 4, selected: true },
+    { key: 'L', name: 'Lettuce', variety: 'Buttercrunch', meta: '50d · partial · 4 per sq ft', count: 6, selected: true },
+    { key: 'C', name: 'Carrot', variety: 'Nantes', meta: '70d · full sun · 16 per sq ft', count: 16, selected: true },
+    { key: 'N', name: 'Bush beans', variety: 'Provider', meta: '55d · full sun · 9 per sq ft', count: 8, selected: true },
+    { key: 'M', name: 'Marigold', variety: 'French', meta: '50d · full sun · 1 per sq ft', count: 4, selected: true },
+    { key: 'CU', name: 'Cucumber', variety: 'Marketmore', meta: '55d · full sun · needs trellis', count: 0, selected: false, photo: 'https://images.unsplash.com/photo-1604977042946-1eecc30f269e?w=500&q=80&auto=format&fit=crop' },
+    { key: 'Z', name: 'Zucchini', variety: 'Black Beauty', meta: '50d · full sun · 1 per 4 sq ft', count: 0, selected: false, photo: 'https://images.unsplash.com/photo-1568625365131-079e026a927d?w=500&q=80&auto=format&fit=crop' }
+  ];
+
+  var cards = list.map(function(p) {
+    var photoUrl = p.photo || (PLANTS[p.key] ? PLANTS[p.key].photo : '');
+    var badge = p.selected
+      ? '<div class="plant-count">' + p.count + ' planted</div>'
+      : '<div class="plant-count add">+ add</div>';
+    return '<div class="plant-card' + (p.selected ? ' selected' : '') + '" data-key="' + p.key + '">' +
+      '<div class="plant-photo photo" style="background-image: url(\'' + photoUrl + '\');"></div>' +
+      '<div class="plant-info">' +
+        '<div class="plant-top">' +
+          '<div class="plant-name">' + p.name + '</div>' + badge +
+        '</div>' +
+        '<div class="plant-variety">\'' + p.variety + '\'</div>' +
+        '<div class="plant-meta">' + p.meta + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  return pageIntro(3) +
+    '<div class="search-bar">' +
+      '<input type="text" class="search-input" placeholder="Search 200+ plants by name, type, or season...">' +
+      '<span class="chip active">All</span>' +
+      '<span class="chip">Vegetables</span>' +
+      '<span class="chip">Herbs</span>' +
+      '<span class="chip">Flowers</span>' +
+    '</div>' +
+    '<div class="plant-grid">' + cards + '</div>' +
+    '<div class="capacity"><em>46 plants &middot; 38 of 48 sq ft planted.</em> Ten square feet to spare if inspiration strikes.</div>' +
+    gnomeNote("One small suggestion —", "You have rabbits on record. Those four marigolds earn their spot — their scent keeps rabbits politely elsewhere, and they bloom from May until first frost.");
+}
+
+// ============ STEP 4 ============
+function renderStep4() {
+  var bed = [
+    ['T','T','T','T','P','P','M','M'],
+    ['B','B','B','B','P','P','M','M'],
+    ['L','L','L','L','C','C','C','C'],
+    ['N','N','N','N','C','C','C','C']
+  ];
+
+  var cells = '';
+  for (var r = 0; r < bed.length; r++) {
+    for (var c = 0; c < bed[r].length; c++) {
+      var k = bed[r][c];
+      cells += '<div class="bed-cell' + (k === state.selectedPlant ? ' active' : '') + '" data-k="' + k + '" style="background-image: url(\'' + PLANTS[k].cell + '\');" title="' + PLANTS[k].name + '"></div>';
+    }
+  }
+
+  var keys = ['T','B','P','L','C','N','M'];
+  var legend = keys.map(function(k) {
+    return '<span class="legend-item"><span class="legend-swatch" style="background-image: url(\'' + PLANTS[k].cell + '\');"></span>' + PLANTS[k].name + '</span>';
+  }).join('');
+
+  var m = PLANTS[state.selectedPlant];
+
+  return pageIntro(4) +
+    '<div class="layout-grid">' +
+      '<div>' +
+        '<div class="bed-head"><span class="bed-head-title">Backyard main &middot; 4 × 8 ft</span><span class="bed-head-compass">North ↑</span></div>' +
+        '<div class="bed-frame"><div class="bed-grid">' + cells + '</div></div>' +
+        '<div class="legend">' + legend + '</div>' +
+      '</div>' +
+      '<div class="detail" id="pd">' +
+        '<div class="detail-photo photo" style="background-image: url(\'' + m.photo + '\');"></div>' +
+        '<div class="detail-body">' +
+          '<div class="detail-name">' + m.name + '</div>' +
+          '<div class="detail-variety">\'' + m.variety + '\'</div>' +
+          '<div class="detail-taxon">' + m.taxon + '</div>' +
+          '<div class="detail-specs">' +
+            '<div><span class="spec-label">Light</span><span class="spec-value">' + m.sun + '</span></div>' +
+            '<div><span class="spec-label">Water</span><span class="spec-value">' + m.water + '</span></div>' +
+            '<div><span class="spec-label">Spacing</span><span class="spec-value">' + m.space + '</span></div>' +
+            '<div><span class="spec-label">To harvest</span><span class="spec-value">' + m.days + '</span></div>' +
+            '<div><span class="spec-label">Plant out</span><span class="spec-value">' + m.start + '</span></div>' +
+            '<div><span class="spec-label">Expect</span><span class="spec-value">' + m.yieldAmt + '</span></div>' +
+          '</div>' +
+          '<div class="detail-why-label">Why in this spot —</div>' +
+          '<p class="detail-why">' + m.why + '</p>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="callout warm">' +
+      '<svg class="callout-icon" width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="#b5552a" stroke-width="1.3"/><path d="M12 6 L 12 12 L 16 14" stroke="#b5552a" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>' +
+      '<div><em>Note for June —</em> your lettuce will bolt mid-month. I\'ll tuck bush bean seeds into those four squares then. Fresh beans by Labor Day, no extra thinking.</div>' +
+    '</div>' +
+    '<div class="callout advice">' +
+      '<svg class="callout-icon" width="18" height="18" viewBox="0 0 24 24"><path d="M12 3 L 20 20 L 4 20 Z" fill="none" stroke="#556b3a" stroke-width="1.3" stroke-linejoin="round"/><line x1="12" y1="10" x2="12" y2="14" stroke="#556b3a" stroke-width="1.3" stroke-linecap="round"/><circle cx="12" cy="17" r="0.8" fill="#556b3a"/></svg>' +
+      '<div><em>On the rabbits —</em> marigolds along the north edge help, but a 24-inch chicken-wire fence along the south edge will keep young beans safe. Remove it once they\'re six inches tall.</div>' +
+    '</div>' +
+    '<div style="display: flex; gap: 10px; margin-top: 20px; justify-content: center;">' +
+      '<button class="btn">↻ Try another arrangement</button>' +
+      '<button class="btn">Edit by hand</button>' +
+    '</div>';
+}
+
+// ============ STEP 5 ============
+function renderStep5() {
+  function thumb(i) {
+    var c = '#6b5f45';
+    if (i === 0) {
+      var grid = '';
+      for (var r = 0; r < 4; r++) for (var col = 0; col < 4; col++)
+        grid += '<rect x="' + (4 + col * 12) + '" y="' + (6 + r * 17) + '" width="11" height="15" fill="' + c + '" opacity="' + (0.1 + ((r + col) % 4) * 0.08) + '"/>';
+      return '<svg viewBox="0 0 58 76" width="100%" height="100%"><rect x="2" y="3" width="54" height="70" fill="none" stroke="' + c + '" stroke-width="0.5" opacity="0.5"/>' + grid + '</svg>';
+    }
+    if (i === 1) {
+      var cards = '';
+      for (var r = 0; r < 3; r++) for (var col = 0; col < 2; col++) {
+        var x = 3 + col * 27, y = 4 + r * 23;
+        cards += '<rect x="' + x + '" y="' + y + '" width="25" height="20" fill="none" stroke="' + c + '" stroke-width="0.4" opacity="0.5"/>';
+        cards += '<circle cx="' + (x + 7) + '" cy="' + (y + 7) + '" r="3.5" fill="#d9662a"/>';
+        cards += '<rect x="' + (x + 12) + '" y="' + (y + 5) + '" width="11" height="1" fill="' + c + '" opacity="0.5"/>';
+        cards += '<rect x="' + (x + 12) + '" y="' + (y + 8) + '" width="8" height="0.8" fill="' + c + '" opacity="0.3"/>';
+      }
+      return '<svg viewBox="0 0 58 76" width="100%" height="100%">' + cards + '</svg>';
+    }
+    if (i === 2) {
+      var lines = '';
+      for (var r = 0; r < 8; r++) lines += '<line x1="3" y1="' + (8 + r * 8) + '" x2="55" y2="' + (8 + r * 8) + '" stroke="' + c + '" stroke-width="0.3" opacity="0.3"/>';
+      var blocks = '';
+      for (var r = 0; r < 6; r++) for (var col = 0; col < 3; col++)
+        blocks += '<rect x="' + (6 + col * 15) + '" y="' + (9 + r * 8) + '" width="11" height="3" fill="#b5552a" opacity="' + (0.2 + (r * col % 3) * 0.15) + '"/>';
+      return '<svg viewBox="0 0 58 76" width="100%" height="100%">' + lines + blocks + '</svg>';
+    }
+    if (i === 3) {
+      var out = '';
+      for (var r = 0; r < 10; r++) out += '<rect x="6" y="' + (6 + r * 6) + '" width="' + (24 + Math.floor(Math.sin(r * 2) * 12)) + '" height="1.3" fill="' + c + '" opacity="0.45"/>';
+      return '<svg viewBox="0 0 58 76" width="100%" height="100%">' + out + '</svg>';
+    }
+    if (i === 4) {
+      var weeks = '';
+      for (var r = 0; r < 3; r++) for (var col = 0; col < 2; col++) {
+        var x = 3 + col * 27, y = 4 + r * 23;
+        weeks += '<rect x="' + x + '" y="' + y + '" width="25" height="20" fill="none" stroke="' + c + '" stroke-width="0.4" opacity="0.5"/>';
+        weeks += '<rect x="' + (x + 3) + '" y="' + (y + 4) + '" width="10" height="1" fill="#b5552a" opacity="0.6"/>';
+        weeks += '<rect x="' + (x + 3) + '" y="' + (y + 8) + '" width="16" height="0.8" fill="' + c + '" opacity="0.3"/>';
+        weeks += '<rect x="' + (x + 3) + '" y="' + (y + 12) + '" width="14" height="0.8" fill="' + c + '" opacity="0.3"/>';
+      }
+      return '<svg viewBox="0 0 58 76" width="100%" height="100%">' + weeks + '</svg>';
+    }
+    return '<svg viewBox="0 0 58 76" width="100%" height="100%"><g opacity="0.5"><circle cx="14" cy="22" r="6" fill="#6BA8D9"/><circle cx="38" cy="32" r="5" fill="#6BA8D9"/><circle cx="26" cy="50" r="7" fill="#6BA8D9"/></g><rect x="4" y="66" width="50" height="0.8" fill="' + c + '" opacity="0.4"/></svg>';
+  }
+
+  var items = [
+    { name: 'Garden layout', desc: 'Each bed to scale, companions annotated', meta: '1 page per bed', checked: true, t: 0 },
+    { name: 'Plant cards', desc: 'Seed-packet style — cut, laminate, stake', meta: '6 per page · 30 cards', checked: true, t: 1 },
+    { name: 'Season calendar', desc: 'Week-by-week: sow, transplant, harvest', meta: '1-page poster', checked: true, t: 2 },
+    { name: 'Shopping list', desc: 'Seeds, starts, supplies — grouped by store', meta: '2 pages', checked: true, t: 3 },
+    { name: 'Weekly tasks', desc: 'What to do, watch for, harvest each week', meta: '24 cards', checked: false, t: 4 },
+    { name: 'Watering schedule', desc: 'Days and amounts, by bed', meta: '1 page', checked: false, t: 5 }
+  ].map(function(p) {
+    return '<div class="printable">' +
+      '<div class="printable-thumb">' + thumb(p.t) + '</div>' +
+      '<div class="printable-body">' +
+        '<div class="printable-head">' +
+          '<div class="printable-name">' + p.name + '</div>' +
+          '<input type="checkbox"' + (p.checked ? ' checked' : '') + '>' +
+        '</div>' +
+        '<div class="printable-desc">' + p.desc + '</div>' +
+        '<div class="printable-meta">' + p.meta + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  return pageIntro(5) +
+    '<div class="printables">' + items + '</div>' +
+    gnomeNote("Weekly from your gnome —", "Tick a box below and I'll send a short note every Sunday — <strong>what to sow, what's ready, what to watch for</strong>. No marketing, just the garden's calendar.") +
+    '<div class="extras">' +
+      '<div class="extras-heading">Also send me —</div>' +
+      '<div class="chk-list">' +
+        '<label class="chk"><input type="checkbox" checked> A weekly Sunday-morning email</label>' +
+        '<label class="chk"><input type="checkbox"> Frost warnings for 61602</label>' +
+        '<label class="chk"><input type="checkbox" checked> "Plant out now" alerts at the right moment</label>' +
+      '</div>' +
+    '</div>';
+}
+
+var STEPS = [renderStep1, renderStep2, renderStep3, renderStep4, renderStep5];
+
+function render() {
+  try {
+    var step = state.step;
+
+    var pills = '';
+    for (var i = 1; i <= 5; i++) {
+      var cls = 'step-pill';
+      if (i === step) cls += ' current';
+      else if (i < step) cls += ' on';
+      pills += '<span class="' + cls + '"></span>';
+    }
+    pills += '<span class="step-label">Part ' + step + ' of 5</span>';
+    document.getElementById('pills').innerHTML = pills;
+
+    var main = document.getElementById('main');
+    main.innerHTML = '<div class="step-content">' + STEPS[step - 1]() + '</div>';
+
+    document.getElementById('back-btn').style.visibility = step === 1 ? 'hidden' : 'visible';
+    document.getElementById('next-btn').textContent = step === 5 ? 'Download packet ↓' : CTAS[step - 1];
+    document.getElementById('page-num').textContent = PARTS[step - 1].name;
+
+    if (step === 2) {
+      main.querySelectorAll('.tpl-card').forEach(function(el) {
+        el.addEventListener('click', function() {
+          state.selectedTemplate = parseInt(el.getAttribute('data-tpl'));
+          render();
+        });
+      });
+    }
+
+    if (step === 4) {
+      main.querySelectorAll('.bed-cell').forEach(function(el) {
+        el.addEventListener('click', function() {
+          state.selectedPlant = el.getAttribute('data-k');
+          render();
+        });
+      });
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    document.getElementById('main').innerHTML = '<div style="padding: 40px; color: #8b3e1d; font-family: monospace;">Error: ' + (err.message || err) + '</div>';
+    console.error(err);
+  }
+}
+
+document.getElementById('next-btn').addEventListener('click', function() {
+  if (state.step < 5) { state.step++; render(); }
+  else { alert('In the real app, this generates your PDF packet.'); }
+});
+
+document.getElementById('back-btn').addEventListener('click', function() {
+  if (state.step > 1) { state.step--; render(); }
+});
+
+render();
+})();
+</script>
+
+</body>
+</html>

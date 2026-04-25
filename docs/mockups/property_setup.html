@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garden Gnome — Property Setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f5ecd3;
+  --paper-warm: #ebe0be;
+  --paper-ivory: #faf3de;
+  --cream: #fdf6e4;
+  --forest: #3d4f2a;
+  --forest-deep: #2a3820;
+  --ivy: #556b3a;
+  --moss: #7a8c5a;
+  --terra: #b5552a;
+  --terra-deep: #8b3e1d;
+  --rust: #9e5436;
+  --stone: #d0c49f;
+  --stone-soft: #dfd3ad;
+  --ink: #2e2a1f;
+  --ink-soft: #6b5f45;
+  --ink-muted: #8a7e62;
+  --serif: 'Fraunces', 'Baskerville', Georgia, serif;
+  --sans: 'DM Sans', -apple-system, sans-serif;
+  --sun: rgba(244, 204, 95, 0.35);
+  --partial: rgba(184, 171, 94, 0.35);
+  --shade: rgba(85, 107, 58, 0.4);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  border-bottom: 1px solid var(--stone);
+}
+
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-icon { width: 32px; height: 38px; }
+
+.brand-name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 19px;
+  color: var(--forest-deep);
+  line-height: 1;
+}
+
+.brand-tag {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 11px;
+  color: var(--terra);
+}
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.step-pills { display: flex; gap: 6px; }
+
+.step-pill {
+  width: 24px;
+  height: 3px;
+  background: var(--stone);
+  border-radius: 2px;
+}
+
+.step-pill.on { background: var(--ivy); }
+.step-pill.current { background: var(--terra); width: 36px; }
+
+/* CONTENT */
+.content { padding: 32px; }
+
+.page-intro { margin-bottom: 24px; }
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--terra);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--forest-deep);
+  margin: 0 0 6px;
+}
+
+h1 em { font-style: italic; color: var(--terra); font-weight: 400; }
+
+.deck {
+  font-family: var(--serif);
+  font-size: 15px;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 620px;
+  line-height: 1.55;
+}
+
+h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--forest);
+  margin: 0 0 10px;
+}
+
+/* STEP 1: ADDRESS */
+.address-block {
+  max-width: 640px;
+  padding: 24px;
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.address-label {
+  font-family: var(--serif);
+  font-size: 14px;
+  color: var(--forest);
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+.address-input {
+  width: 100%;
+  background: var(--cream);
+  border: 1.5px solid var(--stone);
+  border-radius: 4px;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-family: var(--serif);
+  color: var(--forest-deep);
+  outline: none;
+}
+
+.address-input:focus { border-color: var(--ivy); }
+
+.address-help {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--ink-muted);
+  margin-top: 8px;
+  letter-spacing: 0.03em;
+}
+
+.confirm-location {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: var(--cream);
+  border: 1px solid var(--stone-soft);
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--forest-deep);
+  line-height: 1.5;
+}
+
+.confirm-location strong {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--terra);
+}
+
+/* STEP 2: TRACE */
+.map-layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 18px;
+}
+
+.map-container {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: #2a3d20;
+  background-image: url('https://images.unsplash.com/photo-1572021335469-31706a17aaef?w=1000&q=80&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  border-radius: 6px;
+  border: 1.5px solid var(--stone);
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.map-overlay-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.map-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(250, 243, 222, 0.95);
+  color: var(--forest-deep);
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  border: 1px solid var(--stone-soft);
+  pointer-events: none;
+}
+
+.map-compass {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  background: rgba(250, 243, 222, 0.9);
+  border: 1px solid var(--stone);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--forest-deep);
+  pointer-events: none;
+}
+
+.map-scale {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(250, 243, 222, 0.9);
+  padding: 4px 10px;
+  font-family: var(--sans);
+  font-size: 10px;
+  color: var(--ink-soft);
+  border: 1px solid var(--stone-soft);
+  letter-spacing: 0.05em;
+}
+
+.tools-panel {
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-radius: 6px;
+  padding: 14px 16px;
+  height: fit-content;
+}
+
+.tool-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.tool-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: var(--cream);
+  border: 1px solid var(--stone-soft);
+  border-radius: 4px;
+  font-family: var(--serif);
+  font-size: 13px;
+  color: var(--forest-deep);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+}
+
+.tool-btn:hover { border-color: var(--ivy); background: var(--paper-ivory); }
+.tool-btn.active { border-color: var(--terra); background: var(--paper-warm); }
+
+.tool-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.tool-label { flex: 1; }
+
+.tool-count {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 11px;
+  color: var(--terra);
+}
+
+.placed-list {
+  padding-top: 14px;
+  border-top: 1px dashed var(--stone);
+  font-family: var(--serif);
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.placed-list-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--terra);
+  margin-bottom: 8px;
+}
+
+.placed-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 12.5px;
+  color: var(--forest-deep);
+}
+
+.placed-item em { font-style: italic; color: var(--ink-muted); font-size: 11px; }
+
+/* STEP 3: FILL IN GAPS */
+.gaps-form {
+  max-width: 720px;
+  display: grid;
+  gap: 20px;
+}
+
+.gaps-section {
+  padding: 18px 20px;
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-radius: 6px;
+}
+
+.gaps-question {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--forest-deep);
+  margin-bottom: 4px;
+}
+
+.gaps-sublabel {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12.5px;
+  color: var(--ink-muted);
+  margin-bottom: 12px;
+}
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip-opt {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  background: var(--cream);
+  color: var(--forest-deep);
+  border: 1px solid var(--stone);
+  border-radius: 999px;
+  font-family: var(--serif);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chip-opt:hover { border-color: var(--ivy); }
+.chip-opt.active {
+  background: var(--ivy);
+  color: var(--cream);
+  border-color: var(--ivy);
+}
+
+.textarea-simple {
+  width: 100%;
+  background: var(--cream);
+  border: 1px solid var(--stone);
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-family: var(--serif);
+  font-size: 14px;
+  color: var(--forest-deep);
+  resize: vertical;
+  min-height: 60px;
+  outline: none;
+}
+
+.textarea-simple:focus { border-color: var(--ivy); }
+
+/* STEP 4: ANALYSIS */
+.analysis-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 22px;
+  margin-bottom: 22px;
+}
+
+.map-annotated {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: #2a3d20;
+  background-image: url('https://images.unsplash.com/photo-1572021335469-31706a17aaef?w=1000&q=80&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  border-radius: 6px;
+  border: 1.5px solid var(--stone);
+  overflow: hidden;
+}
+
+.pin {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.pin-marker {
+  width: 24px;
+  height: 24px;
+  background: var(--terra);
+  border: 2px solid var(--cream);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--cream);
+  font-weight: 500;
+}
+
+.pin-marker.info { background: var(--ivy); }
+
+.pin-label {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(250, 243, 222, 0.95);
+  color: var(--forest-deep);
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-family: var(--serif);
+  font-size: 11px;
+  white-space: nowrap;
+  border: 1px solid var(--stone-soft);
+  line-height: 1.2;
+}
+
+.pin-label em { font-style: italic; color: var(--terra); font-size: 10px; display: block; }
+
+.sun-zone {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.panel {
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-radius: 6px;
+  padding: 18px 20px;
+}
+
+.panel-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--terra);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--stone);
+}
+
+.inventory {
+  display: grid;
+  gap: 10px;
+}
+
+.inv-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 0;
+  font-family: var(--serif);
+  font-size: 13px;
+  color: var(--forest-deep);
+  border-bottom: 1px dotted var(--stone-soft);
+}
+
+.inv-row:last-child { border-bottom: none; }
+
+.inv-label { color: var(--ink-soft); font-style: italic; }
+.inv-value { font-weight: 500; text-align: right; }
+
+/* DIGEST */
+.digest {
+  grid-column: 1 / -1;
+  padding: 28px 32px;
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-left: 4px solid var(--ivy);
+  border-radius: 6px;
+  margin-bottom: 22px;
+}
+
+.digest-header {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.digest-avatar { width: 56px; height: 66px; }
+
+.digest-label {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--terra);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.digest-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.2;
+  color: var(--forest-deep);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.digest-title em { font-style: italic; color: var(--terra); }
+
+.digest-body {
+  font-family: var(--serif);
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--forest-deep);
+}
+
+.digest-body p { margin: 0 0 14px; }
+.digest-body p:last-child { margin-bottom: 0; }
+.digest-body strong { font-style: italic; font-weight: 500; color: var(--terra); }
+
+.digest-gaps {
+  margin-top: 18px;
+  padding: 14px 16px;
+  background: var(--paper-warm);
+  border-radius: 4px;
+  font-family: var(--serif);
+  font-size: 13.5px;
+  color: var(--forest-deep);
+  line-height: 1.55;
+}
+
+.digest-gaps-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--terra);
+  margin-bottom: 6px;
+}
+
+/* LEGEND */
+.legend-zones {
+  display: flex;
+  gap: 14px;
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: var(--paper-ivory);
+  border: 1px solid var(--stone-soft);
+  border-radius: 4px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  font-family: var(--serif);
+  color: var(--forest-deep);
+}
+
+.legend-zone {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(46, 42, 31, 0.2);
+}
+
+/* BUTTONS */
+.btn {
+  background: transparent;
+  border: 1.5px solid var(--ivy);
+  color: var(--forest);
+  border-radius: 999px;
+  padding: 10px 22px;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: var(--serif);
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.btn:hover { background: var(--ivy); color: var(--cream); }
+
+.btn.primary { background: var(--terra); border-color: var(--terra); color: var(--cream); }
+.btn.primary:hover { background: var(--terra-deep); border-color: var(--terra-deep); }
+
+.btn.ghost { border-color: var(--stone); color: var(--ink-soft); }
+.btn.ghost:hover { border-color: var(--ivy); background: transparent; color: var(--forest); }
+
+/* FOOTER */
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 32px;
+  border-top: 1px solid var(--stone);
+}
+
+.footer .spacer { flex: 1; }
+
+.step-name {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink-muted);
+  font-size: 13px;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-content { animation: fadeUp 0.35s ease-out; }
+.step-content > * { animation: fadeUp 0.5s ease-out both; }
+.step-content > *:nth-child(1) { animation-delay: 0s; }
+.step-content > *:nth-child(2) { animation-delay: 0.08s; }
+.step-content > *:nth-child(3) { animation-delay: 0.16s; }
+.step-content > *:nth-child(4) { animation-delay: 0.24s; }
+
+/* Goal cards (step 5) */
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.goal-card {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--paper-ivory);
+  border: 1.5px solid var(--stone-soft);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.goal-card:hover {
+  border-color: var(--ivy);
+}
+
+.goal-card.checked {
+  border-color: var(--ivy);
+  background: var(--paper);
+}
+
+/* Plot dashboard cards (step 7) */
+.plot-dash-card:hover {
+  border-color: var(--ivy) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(46, 42, 31, 0.08);
+}
+
+.clickable-plot {
+  cursor: pointer;
+}
+
+.clickable-plot:hover rect {
+  stroke-width: 3;
+}
+
+@media (max-width: 820px) {
+  .map-layout, .analysis-grid { grid-template-columns: 1fr; }
+  .content { padding: 20px; }
+  .header, .footer { padding: 16px 20px; }
+  h1 { font-size: 26px; }
+  .goals-grid { grid-template-columns: 1fr; }
+  .step-pills .step-pill:nth-child(n+5) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <div class="brand">
+      <svg class="brand-icon" viewBox="0 0 80 100">
+        <ellipse cx="40" cy="96" rx="18" ry="2" fill="#8b6f47" opacity="0.3"/>
+        <path d="M40 8 Q 20 42, 16 46 L 64 46 Q 60 42, 40 8 Z" fill="#b5552a"/>
+        <ellipse cx="40" cy="47" rx="24" ry="2.5" fill="#8b3e1d"/>
+        <circle cx="40" cy="10" r="3" fill="#f3e9c9"/>
+        <ellipse cx="40" cy="52" rx="13" ry="10" fill="#e8c4a0"/>
+        <path d="M24 49 Q 22 72, 40 76 Q 58 72, 56 49 Q 53 64, 40 66 Q 27 64, 24 49 Z" fill="#f3e9c9"/>
+        <path d="M31 54 Q 40 57, 49 54 Q 43 59, 40 59 Q 37 59, 31 54 Z" fill="#f3e9c9"/>
+        <circle cx="40" cy="53" r="3" fill="#d98e7e"/>
+        <path d="M33 47 Q 35 48.5, 37 47 M 43 47 Q 45 48.5, 47 47" stroke="#2a4428" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M27 73 Q 25 92, 40 94 Q 55 92, 53 73 Z" fill="#556b3a"/>
+        <rect x="29" y="86" width="22" height="2.8" fill="#2e2a1f"/>
+        <path d="M28 79 L 20 83 M 52 79 L 60 83" stroke="#556b3a" stroke-width="3.5" stroke-linecap="round"/>
+        <ellipse cx="34" cy="96" rx="5.5" ry="2.5" fill="#2e2a1f"/>
+        <ellipse cx="46" cy="96" rx="5.5" ry="2.5" fill="#2e2a1f"/>
+      </svg>
+      <div>
+        <div class="brand-name">Garden Gnome</div>
+        <span class="brand-tag">your friendly gardener's friend</span>
+      </div>
+    </div>
+    <div class="step-indicator">
+      <span id="step-text"></span>
+      <div class="step-pills" id="step-pills"></div>
+    </div>
+  </header>
+
+  <main id="main" class="content"></main>
+
+  <footer class="footer">
+    <button class="btn ghost" id="back-btn">← Back</button>
+    <div class="spacer"></div>
+    <span class="step-name" id="step-name"></span>
+    <div class="spacer"></div>
+    <button class="btn primary" id="next-btn"></button>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+'use strict';
+
+var state = { step: 1 };
+
+var STEP_META = [
+  { name: 'Your address', title: "Let's start with <em>your land</em>.", deck: "I'll pull up a satellite view and we can mark what's there. Takes about five minutes." },
+  { name: 'Mark what I see', title: 'Help me <em>see clearly</em>.', deck: "Click a tool, then click the map to place it. Start with your house — I'll use it to figure out sun direction. Add trees, beds, and water sources as you go." },
+  { name: 'Fill in gaps', title: "Things I <em>can't tell</em> from above.", deck: "A few quick things I can't pick up from the satellite image. Answer what you know, skip what you don't." },
+  { name: 'My analysis', title: "Here's <em>what I see</em>.", deck: "My read on your property. Sun zones, microclimates, and what's working in your favor." },
+  { name: 'Your goals', title: "What do you want to <em>grow?</em>", deck: "Pick everything you want on your property. I'll figure out if and where it all fits." },
+  { name: 'My proposal', title: "Here's <em>my plan</em> for your place.", deck: "A proposed layout. Existing things are locked — new plots you can drag, resize, or swap out. Nothing is real until you say so." },
+  { name: 'Your homestead', title: "Your <em>homestead</em>, at a glance.", deck: "This is home. Click any plot to tend it — I'll walk you through planting, watering, harvesting, everything." }
+];
+
+var CTAS = ['Pull up my property →', 'Fill in gaps →', "See what I've learned →", "Tell me what you want to grow →", 'See my proposed plan →', 'Accept and go to my homestead →', 'Start tending my plots →'];
+
+// ============ STEP 1 ============
+function renderStep1() {
+  return '<div class="page-intro">' +
+    '<div class="eyebrow">Part 1 of 7 · Your address</div>' +
+    '<h1>' + STEP_META[0].title + '</h1>' +
+    '<p class="deck">' + STEP_META[0].deck + '</p>' +
+  '</div>' +
+  '<div class="address-block">' +
+    '<div class="address-label">What&rsquo;s the address?</div>' +
+    '<input type="text" class="address-input" value="4127 N Prospect Rd, Peoria, IL 61603">' +
+    '<div class="address-help">Only used to pull your satellite image and determine your growing zone. Never shared.</div>' +
+    '<div class="confirm-location">' +
+      '<strong>Found it.</strong> Peoria, IL · Zone 5b · 165 frost-free days (May 1 - Oct 15) · ~1,400 chill hours for fruit trees · Average rainfall 38 inches/year, driest in August.' +
+    '</div>' +
+  '</div>' +
+  '<div style="background: var(--paper-ivory); border: 1px solid var(--stone-soft); border-radius: 6px; padding: 16px 18px; max-width: 640px;">' +
+    '<h2>About your property</h2>' +
+    '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; margin-top: 10px;">' +
+      '<div>' +
+        '<div class="gaps-sublabel" style="margin-bottom: 6px;">Total size</div>' +
+        '<div class="chip-group">' +
+          '<span class="chip-opt">&lt; 1/4 acre</span>' +
+          '<span class="chip-opt">1/4 - 1/2</span>' +
+          '<span class="chip-opt active">1/2 - 1 acre</span>' +
+          '<span class="chip-opt">1 - 5 acres</span>' +
+          '<span class="chip-opt">5+ acres</span>' +
+        '</div>' +
+      '</div>' +
+      '<div>' +
+        '<div class="gaps-sublabel" style="margin-bottom: 6px;">What you have going now</div>' +
+        '<div class="chip-group">' +
+          '<span class="chip-opt active">Existing plots</span>' +
+          '<span class="chip-opt">Fruit trees</span>' +
+          '<span class="chip-opt">Blank slate</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+// ============ STEP 2 ============
+function renderStep2() {
+  return '<div class="page-intro">' +
+    '<div class="eyebrow">Part 2 of 7 · Mark what I see</div>' +
+    '<h1>' + STEP_META[1].title + '</h1>' +
+    '<p class="deck">' + STEP_META[1].deck + '</p>' +
+  '</div>' +
+  '<div class="map-layout">' +
+    '<div class="map-container">' +
+      '<svg class="map-overlay-svg" viewBox="0 0 800 600" preserveAspectRatio="none">' +
+        // Property outline
+        '<polygon points="80,60 740,70 730,560 70,540" fill="none" stroke="#f4cc5f" stroke-width="3" stroke-dasharray="8 6" opacity="0.9"/>' +
+        // House (pre-placed as example)
+        '<rect x="280" y="220" width="180" height="110" fill="rgba(250,243,222,0.85)" stroke="#8b3e1d" stroke-width="2"/>' +
+        '<text x="370" y="280" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="14" fill="#2a3820">house</text>' +
+        // Driveway
+        '<polygon points="460,245 580,250 585,340 465,335" fill="rgba(46,42,31,0.3)" stroke="#4a3a22" stroke-width="1"/>' +
+        '<text x="525" y="300" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="10" fill="#faf3de" opacity="0.9">driveway</text>' +
+        // Raised bed
+        '<rect x="500" y="360" width="80" height="40" fill="rgba(181,85,42,0.4)" stroke="#8b3e1d" stroke-width="1.5"/>' +
+        '<text x="540" y="385" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="10" fill="#faf3de">raised bed</text>' +
+        // Fruit trees - peaches (NW corner)
+        '<circle cx="140" cy="140" r="18" fill="rgba(85,107,58,0.55)" stroke="#2a3820" stroke-width="1.5"/>' +
+        '<circle cx="195" cy="145" r="18" fill="rgba(85,107,58,0.55)" stroke="#2a3820" stroke-width="1.5"/>' +
+        '<circle cx="140" cy="200" r="18" fill="rgba(85,107,58,0.55)" stroke="#2a3820" stroke-width="1.5"/>' +
+        '<circle cx="195" cy="205" r="18" fill="rgba(85,107,58,0.55)" stroke="#2a3820" stroke-width="1.5"/>' +
+        '<text x="165" y="110" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="11" fill="#f4cc5f">4 peach trees</text>' +
+        // Cherries
+        '<circle cx="260" cy="155" r="18" fill="rgba(85,107,58,0.55)" stroke="#2a3820" stroke-width="1.5"/>' +
+        '<circle cx="260" cy="210" r="18" fill="rgba(85,107,58,0.55)" stroke="#2a3820" stroke-width="1.5"/>' +
+        // Large existing maple
+        '<circle cx="660" cy="340" r="45" fill="rgba(46,58,32,0.6)" stroke="#2a3820" stroke-width="2"/>' +
+        '<text x="660" y="345" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="11" fill="#f4cc5f">big maple</text>' +
+        // Water source pin
+        '<circle cx="430" cy="340" r="6" fill="#6BA8D9" stroke="#faf3de" stroke-width="1.5"/>' +
+      '</svg>' +
+      '<div class="map-compass">N ↑</div>' +
+      '<div class="map-scale">50 ft</div>' +
+      '<div class="map-hint">Tree tool selected — click anywhere on the map</div>' +
+    '</div>' +
+
+    '<div class="tools-panel">' +
+      '<h2>Tools</h2>' +
+      '<div class="tool-list">' +
+        '<button class="tool-btn"><span class="tool-icon">⌂</span><span class="tool-label">House</span><span class="tool-count">1</span></button>' +
+        '<button class="tool-btn"><span class="tool-icon">▬</span><span class="tool-label">Driveway</span><span class="tool-count">1</span></button>' +
+        '<button class="tool-btn active"><span class="tool-icon">●</span><span class="tool-label">Existing tree</span><span class="tool-count">7</span></button>' +
+        '<button class="tool-btn"><span class="tool-icon">▭</span><span class="tool-label">Existing bed</span><span class="tool-count">1</span></button>' +
+        '<button class="tool-btn"><span class="tool-icon">◆</span><span class="tool-label">Water source</span><span class="tool-count">1</span></button>' +
+        '<button class="tool-btn"><span class="tool-icon">┃</span><span class="tool-label">Fence line</span><span class="tool-count">0</span></button>' +
+        '<button class="tool-btn"><span class="tool-icon">~</span><span class="tool-label">Wet / low spot</span><span class="tool-count">0</span></button>' +
+        '<button class="tool-btn"><span class="tool-icon">☁</span><span class="tool-label">Shade from neighbor</span><span class="tool-count">0</span></button>' +
+      '</div>' +
+      '<div class="placed-list">' +
+        '<div class="placed-list-title">Placed so far</div>' +
+        '<div class="placed-item">House <em>1</em></div>' +
+        '<div class="placed-item">Driveway <em>1</em></div>' +
+        '<div class="placed-item">Peach trees <em>4</em></div>' +
+        '<div class="placed-item">Cherry trees <em>2</em></div>' +
+        '<div class="placed-item">Other trees <em>1</em></div>' +
+        '<div class="placed-item">Raised bed <em>1</em></div>' +
+        '<div class="placed-item">Hose bib <em>1</em></div>' +
+      '</div>' +
+    '</div>' +
+  '</div>' +
+  '<div style="font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--ink-soft); margin-top: 14px; max-width: 640px;">Right-click a pin to remove it. You can also drag to reposition. Satellite imagery refreshed quarterly from Mapbox.</div>';
+}
+
+// ============ STEP 3 ============
+function renderStep3() {
+  return '<div class="page-intro">' +
+    '<div class="eyebrow">Part 3 of 7 · Fill in gaps</div>' +
+    '<h1>' + STEP_META[2].title + '</h1>' +
+    '<p class="deck">' + STEP_META[2].deck + '</p>' +
+  '</div>' +
+  '<div class="gaps-form">' +
+    '<div class="gaps-section">' +
+      '<div class="gaps-question">Do you know your soil type?</div>' +
+      '<div class="gaps-sublabel">A quick dig will tell you — wet a handful, try to roll it into a ball. Crumbles = sandy. Holds loose = loamy. Sticky ribbon = clay.</div>' +
+      '<div class="chip-group">' +
+        '<span class="chip-opt">Sandy</span>' +
+        '<span class="chip-opt active">Loamy</span>' +
+        '<span class="chip-opt">Clay</span>' +
+        '<span class="chip-opt">Mixed / varies</span>' +
+        '<span class="chip-opt">Not sure</span>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="gaps-section">' +
+      '<div class="gaps-question">Which direction does your land slope, if any?</div>' +
+      '<div class="gaps-sublabel">Stand at the high point and note which way water would run. Matters for drainage and cold-air pooling.</div>' +
+      '<div class="chip-group">' +
+        '<span class="chip-opt">North</span>' +
+        '<span class="chip-opt">South</span>' +
+        '<span class="chip-opt active">East</span>' +
+        '<span class="chip-opt">West</span>' +
+        '<span class="chip-opt">Flat / no slope</span>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="gaps-section">' +
+      '<div class="gaps-question">Any problem areas you already know about?</div>' +
+      '<div class="gaps-sublabel">Select all that apply.</div>' +
+      '<div class="chip-group">' +
+        '<span class="chip-opt active">Rabbits</span>' +
+        '<span class="chip-opt">Deer</span>' +
+        '<span class="chip-opt active">Squirrels</span>' +
+        '<span class="chip-opt">Groundhogs</span>' +
+        '<span class="chip-opt">Poor drainage somewhere</span>' +
+        '<span class="chip-opt">Heavy wind exposure</span>' +
+        '<span class="chip-opt">Septic / leach field</span>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="gaps-section">' +
+      '<div class="gaps-question">Anything else I should know?</div>' +
+      '<div class="gaps-sublabel">Optional. Spots you&rsquo;ve struggled with, neighbor issues, microclimates you&rsquo;ve observed, anything.</div>' +
+      '<textarea class="textarea-simple" placeholder="e.g., the southwest corner pools water in spring. The spot behind the shed gets a weird hot pocket in July.">The west side of the house gets brutal afternoon sun &mdash; anything we put there needs to be tough. Also a black walnut on the neighbor&rsquo;s lot to the NE side &mdash; not sure how much it affects things.</textarea>' +
+    '</div>' +
+  '</div>';
+}
+
+// ============ STEP 4: THE ANALYSIS ============
+function renderStep4() {
+  return '<div class="page-intro">' +
+    '<div class="eyebrow">Part 4 of 7 · My analysis</div>' +
+    '<h1>' + STEP_META[3].title + '</h1>' +
+    '<p class="deck">' + STEP_META[3].deck + '</p>' +
+  '</div>' +
+
+  '<div class="digest">' +
+    '<div class="digest-header">' +
+      '<div class="digest-avatar">' +
+        '<svg viewBox="0 0 80 100" width="100%" height="100%">' +
+        '<ellipse cx="40" cy="96" rx="18" ry="2" fill="#8b6f47" opacity="0.3"/>' +
+        '<path d="M40 8 Q 20 42, 16 46 L 64 46 Q 60 42, 40 8 Z" fill="#b5552a"/>' +
+        '<ellipse cx="40" cy="47" rx="24" ry="2.5" fill="#8b3e1d"/>' +
+        '<circle cx="40" cy="10" r="3" fill="#f3e9c9"/>' +
+        '<ellipse cx="40" cy="52" rx="13" ry="10" fill="#e8c4a0"/>' +
+        '<path d="M24 49 Q 22 72, 40 76 Q 58 72, 56 49 Q 53 64, 40 66 Q 27 64, 24 49 Z" fill="#f3e9c9"/>' +
+        '<path d="M31 54 Q 40 57, 49 54 Q 43 59, 40 59 Q 37 59, 31 54 Z" fill="#f3e9c9"/>' +
+        '<circle cx="40" cy="53" r="3" fill="#d98e7e"/>' +
+        '<path d="M33 47 Q 35 48.5, 37 47 M 43 47 Q 45 48.5, 47 47" stroke="#2a4428" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
+        '<path d="M27 73 Q 25 92, 40 94 Q 55 92, 53 73 Z" fill="#556b3a"/>' +
+        '<rect x="29" y="86" width="22" height="2.8" fill="#2e2a1f"/>' +
+        '<path d="M28 79 L 20 83 M 52 79 L 60 83" stroke="#556b3a" stroke-width="3.5" stroke-linecap="round"/>' +
+        '<ellipse cx="34" cy="96" rx="5.5" ry="2.5" fill="#2e2a1f"/>' +
+        '<ellipse cx="46" cy="96" rx="5.5" ry="2.5" fill="#2e2a1f"/>' +
+        '</svg>' +
+      '</div>' +
+      '<div>' +
+        '<div class="digest-label">A note from your gnome</div>' +
+        '<h2 class="digest-title" style="font-family: var(--serif); font-size: 22px; color: var(--forest-deep); font-style: normal; margin: 0;">What I see on <em>your place</em></h2>' +
+      '</div>' +
+    '</div>' +
+    '<div class="digest-body">' +
+      "<p>You're working with <strong>0.6 acres in Peoria, Illinois</strong> — Zone 5b, so roughly 165 frost-free days between May 1 and October 15. The land slopes gently east, which is good news for morning sun but means water runs toward your neighbor's fence. Your loamy soil is ideal — the best hand you could be dealt.</p>" +
+      "<p>Your house sits north-center, leaving you a generous <strong>south lawn that gets 8+ hours of sun</strong>. That's your prime growing real estate. I noticed you've already got an orchard going in the northwest corner — four peach and four cherry trees, which is a good scale for home use, though I'll want to confirm your cherry varieties include a compatible pollinator pair. Your raised bed near the back door is well-placed for kitchen access.</p>" +
+      "<p>The big maple on your east property line will cast <strong>afternoon shade about 20 feet into the lawn from June onward</strong> — that's a strength, not a problem, and I'd use that cooler zone for lettuce and other greens that bolt in heat. The west side of your house, which you flagged as brutal in afternoon sun, is actually a good spot for heat-lovers: peppers, eggplant, basil. And that black walnut on the neighbor's lot is worth taking seriously — it produces juglone, which kills tomatoes and peppers within about 50 feet of the drip line. We should keep those crops well south of the NE corner.</p>" +
+    '</div>' +
+    '<div class="digest-gaps">' +
+      '<div class="digest-gaps-title">A few things I couldn&rsquo;t tell &mdash;</div>' +
+      'Your cherry varieties (sweet cherries need a pollinator; sour cherries self-pollinate). The depth of your topsoil. Whether that raised bed is currently in use or empty. And if you have any wild deer pressure — rabbits I know about, but deer travel differently.' +
+    '</div>' +
+  '</div>' +
+
+  '<div class="analysis-grid">' +
+    '<div>' +
+      '<div class="map-annotated">' +
+        '<svg class="map-overlay-svg" viewBox="0 0 800 600" preserveAspectRatio="none">' +
+          // Property outline
+          '<polygon points="80,60 740,70 730,560 70,540" fill="none" stroke="#f4cc5f" stroke-width="3" stroke-dasharray="8 6" opacity="0.9"/>' +
+          // Sun zones (overlays)
+          '<ellipse cx="400" cy="480" rx="260" ry="70" fill="rgba(244,204,95,0.3)"/>' +
+          '<ellipse cx="640" cy="400" rx="90" ry="80" fill="rgba(85,107,58,0.35)"/>' +
+          '<ellipse cx="150" cy="490" rx="90" ry="55" fill="rgba(184,171,94,0.3)"/>' +
+          // House
+          '<rect x="280" y="220" width="180" height="110" fill="rgba(250,243,222,0.85)" stroke="#8b3e1d" stroke-width="2"/>' +
+          '<text x="370" y="280" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="14" fill="#2a3820">house</text>' +
+          // Driveway
+          '<polygon points="460,245 580,250 585,340 465,335" fill="rgba(46,42,31,0.3)" stroke="#4a3a22" stroke-width="1"/>' +
+          // Trees
+          '<circle cx="140" cy="140" r="18" fill="rgba(85,107,58,0.55)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="195" cy="145" r="18" fill="rgba(85,107,58,0.55)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="140" cy="200" r="18" fill="rgba(85,107,58,0.55)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="195" cy="205" r="18" fill="rgba(85,107,58,0.55)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="260" cy="155" r="18" fill="rgba(85,107,58,0.55)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="260" cy="210" r="18" fill="rgba(85,107,58,0.55)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="660" cy="340" r="45" fill="rgba(46,58,32,0.6)" stroke="#2a3820" stroke-width="2"/>' +
+          // Raised bed
+          '<rect x="500" y="360" width="80" height="40" fill="rgba(181,85,42,0.4)" stroke="#8b3e1d" stroke-width="1.5"/>' +
+        '</svg>' +
+        // Observation pins
+        '<div class="pin" style="top: 77%; left: 50%;"><div class="pin-marker">★</div><div class="pin-label"><em>Prime real estate</em>South lawn, 8+ hrs sun</div></div>' +
+        '<div class="pin" style="top: 62%; left: 80%;"><div class="pin-marker info">!</div><div class="pin-label"><em>Afternoon shade</em>From the maple, June+</div></div>' +
+        '<div class="pin" style="top: 18%; left: 85%;"><div class="pin-marker info">!</div><div class="pin-label"><em>Watch the walnut</em>No tomatoes within 50 ft</div></div>' +
+        '<div class="pin" style="top: 35%; left: 12%;"><div class="pin-marker">✓</div><div class="pin-label"><em>Orchard active</em>4 peaches + 2 cherries</div></div>' +
+        '<div class="map-compass">N ↑</div>' +
+        '<div class="map-scale">50 ft</div>' +
+      '</div>' +
+      '<div class="legend-zones">' +
+        '<span class="legend-zone"><span class="legend-swatch" style="background: rgba(244,204,95,0.5);"></span>Full sun, 8+ hrs</span>' +
+        '<span class="legend-zone"><span class="legend-swatch" style="background: rgba(184,171,94,0.5);"></span>Partial, 4-6 hrs</span>' +
+        '<span class="legend-zone"><span class="legend-swatch" style="background: rgba(85,107,58,0.5);"></span>Shade, under 4 hrs</span>' +
+      '</div>' +
+    '</div>' +
+
+    '<div>' +
+      '<div class="panel" style="margin-bottom: 12px;">' +
+        '<div class="panel-title">The basics</div>' +
+        '<div class="inventory">' +
+          '<div class="inv-row"><span class="inv-label">Lot size</span><span class="inv-value">~0.6 acres</span></div>' +
+          '<div class="inv-row"><span class="inv-label">Growing zone</span><span class="inv-value">USDA 5b</span></div>' +
+          '<div class="inv-row"><span class="inv-label">Frost-free days</span><span class="inv-value">165 (May 1 – Oct 15)</span></div>' +
+          '<div class="inv-row"><span class="inv-label">Chill hours</span><span class="inv-value">~1,400 per winter</span></div>' +
+          '<div class="inv-row"><span class="inv-label">Soil</span><span class="inv-value">Loamy (you told me)</span></div>' +
+          '<div class="inv-row"><span class="inv-label">Slope</span><span class="inv-value">Gentle, east-facing</span></div>' +
+          '<div class="inv-row"><span class="inv-label">Prevailing wind</span><span class="inv-value">SW in summer</span></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="panel">' +
+        '<div class="panel-title">What you already have</div>' +
+        '<div class="inventory">' +
+          '<div class="inv-row"><span class="inv-label">Peach trees</span><span class="inv-value">4, NW corner</span></div>' +
+          '<div class="inv-row"><span class="inv-label">Cherry trees</span><span class="inv-value">2, NW corner</span></div>' +
+          '<div class="inv-row"><span class="inv-label">Raised bed</span><span class="inv-value">~32 sq ft, S side</span></div>' +
+          '<div class="inv-row"><span class="inv-label">Water access</span><span class="inv-value">Hose bib, south</span></div>' +
+          '<div class="inv-row"><span class="inv-label">Large shade tree</span><span class="inv-value">1 maple, east line</span></div>' +
+          '<div class="inv-row"><span class="inv-label">Full-sun area</span><span class="inv-value">~3,800 sq ft</span></div>' +
+          '<div class="inv-row"><span class="inv-label">Room to expand</span><span class="inv-value">Generous</span></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>' +
+
+  '<div style="padding: 18px 22px; background: var(--paper-warm); border-radius: 6px; border-left: 3px solid var(--terra); font-family: var(--serif); font-size: 14px; color: var(--forest-deep); line-height: 1.6;">' +
+    '<div style="font-style: italic; color: var(--terra); font-size: 12px; margin-bottom: 4px; font-family: var(--sans); letter-spacing: 0.18em; text-transform: uppercase;">What&rsquo;s next</div>' +
+    "Now we decide what you want to grow. Given the land, I can fit a <strong style='font-style: italic; color: var(--terra);'>kitchen garden, an expanded orchard, a corn block, and a cut-flower row</strong> without anything competing. If you want all of that, tell me so — or we can start smaller." +
+  '</div>';
+}
+
+// ============ STEP 5: GOALS ============
+function renderStep5() {
+  var goals = [
+    { id: 'kitchen', name: 'Kitchen garden', desc: 'Tomatoes, peppers, herbs, salad — the basics to eat in summer', space: '30-80 sq ft', existing: true, checked: true, type: 'bed' },
+    { id: 'orchard', name: 'Expanded orchard', desc: 'Add apples, pears, or more stone fruit to your peach & cherry start', space: '6-12 trees', existing: true, checked: true, type: 'trees' },
+    { id: 'berries', name: 'Berry patch', desc: 'Strawberries, raspberries, blueberries — perennial & low-effort', space: '60-150 sq ft', checked: false, type: 'bed' },
+    { id: 'corn', name: 'Corn block', desc: 'Sweet corn or popcorn, grown in a block for wind pollination', space: '10-20 rows', checked: true, type: 'rows' },
+    { id: 'flowers', name: 'Cut flowers', desc: 'Zinnias, dahlias, snapdragons — weekly bouquets May-frost', space: '1-2 rows', checked: true, type: 'rows' },
+    { id: 'pollinator', name: 'Pollinator strip', desc: 'Native perennials that feed bees, butterflies, birds — set and forget', space: '20-100 ft long', checked: false, type: 'bed' },
+    { id: 'herbs', name: 'Herb spiral', desc: 'A compact stacked herb garden near the kitchen', space: '6-9 ft diameter', checked: false, type: 'bed' },
+    { id: 'wheat', name: 'Grain patch', desc: 'Wheat, oats, or rye — harvest by hand for baking or animal feed', space: '200+ sq ft', checked: false, type: 'rows' },
+    { id: 'pumpkin', name: 'Pumpkin / squash patch', desc: 'Sprawling vines — needs room to run', space: '100+ sq ft', checked: false, type: 'bed' },
+    { id: 'tunnel', name: 'Greenhouse / hoop house', desc: 'Extend your season 4-6 weeks on both ends', space: '6×8 ft or larger', checked: false, type: 'structure' }
+  ];
+
+  var cards = goals.map(function(g) {
+    var existingTag = g.existing ? '<span style="display: inline-block; background: var(--ivy); color: var(--cream); font-family: var(--serif); font-style: italic; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-left: 6px;">you have this</span>' : '';
+    return '<label class="goal-card' + (g.checked ? ' checked' : '') + '" data-goal="' + g.id + '">' +
+      '<input type="checkbox"' + (g.checked ? ' checked' : '') + ' style="margin-right: 0; align-self: flex-start; margin-top: 4px;">' +
+      '<div style="flex: 1;">' +
+        '<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 3px;">' +
+          '<span style="font-family: var(--serif); font-weight: 500; font-size: 16px; color: var(--forest-deep);">' + g.name + existingTag + '</span>' +
+          '<span style="font-family: var(--serif); font-style: italic; font-size: 12px; color: var(--ink-muted);">' + g.space + '</span>' +
+        '</div>' +
+        '<div style="font-family: var(--serif); font-size: 13px; color: var(--ink-soft); line-height: 1.5;">' + g.desc + '</div>' +
+      '</div>' +
+    '</label>';
+  }).join('');
+
+  return '<div class="page-intro">' +
+    '<div class="eyebrow">Part 5 of 7 · Your goals</div>' +
+    '<h1>' + STEP_META[4].title + '</h1>' +
+    '<p class="deck">' + STEP_META[4].deck + '</p>' +
+  '</div>' +
+  '<div style="background: var(--paper-ivory); border: 1px solid var(--stone-soft); border-left: 3px solid var(--ivy); border-radius: 6px; padding: 16px 20px; margin-bottom: 20px; font-family: var(--serif); font-size: 14px; color: var(--forest-deep); line-height: 1.6;">' +
+    '<span style="font-family: var(--serif); font-style: italic; color: var(--terra);">Go ahead, be ambitious.</span> If it doesn&rsquo;t fit, I&rsquo;ll tell you. If there are conflicts, I&rsquo;ll surface them. You can always scale back. Check whatever interests you.' +
+  '</div>' +
+  '<div class="goals-grid">' + cards + '</div>' +
+  '<div style="margin-top: 22px; padding: 14px 18px; background: var(--paper-warm); border-radius: 6px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">' +
+    '<div style="font-family: var(--serif); font-size: 14px; color: var(--forest-deep);">' +
+      '<strong style="font-style: italic; font-weight: 500; color: var(--terra);">4 selected</strong> — these should all fit on your land with room to spare.' +
+    '</div>' +
+    '<div style="font-family: var(--serif); font-style: italic; font-size: 12px; color: var(--ink-soft);">Don&rsquo;t see what you want? You can add custom plots later.</div>' +
+  '</div>';
+}
+
+// ============ STEP 6: PROPOSED PLAN ============
+function renderStep6() {
+  return '<div class="page-intro">' +
+    '<div class="eyebrow">Part 6 of 7 · My proposal</div>' +
+    '<h1>' + STEP_META[5].title + '</h1>' +
+    '<p class="deck">' + STEP_META[5].deck + '</p>' +
+  '</div>' +
+
+  '<div class="digest" style="margin-bottom: 22px;">' +
+    '<div class="digest-header">' +
+      '<div class="digest-avatar">' + gnomeSvgHTML() + '</div>' +
+      '<div>' +
+        '<div class="digest-label">My reasoning</div>' +
+        '<div style="font-family: var(--serif); font-size: 22px; color: var(--forest-deep); line-height: 1.2; margin: 0;">A plan that <em style="font-style: italic; color: var(--terra);">fits your land</em>.</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="digest-body">' +
+      "<p>I fit everything you asked for. Your <strong>kitchen garden</strong> goes right next to your existing raised bed — I've proposed a 4×12 ft expansion so you've got ~80 sq ft total of the best, sunniest soil close to the kitchen door. </p>" +
+      "<p>For the <strong>expanded orchard</strong>, your existing four peach and two cherry trees are well-placed, but you have room for four more stone fruits (say, two apricots and two plums) spaced 15 ft apart in the same northwest block. I've also flagged that at least one of your cherries should be a compatible pollinator variety — I'll walk you through that when we tend the orchard.</p>" +
+      "<p>The <strong>corn block</strong> — 12 rows, 25 ft long — I've placed on the west side, upwind of your kitchen garden so the corn pollen blows over nothing important. The <strong>cut-flower row</strong> runs along the south walk — full sun, right where you'll see it coming and going.</p>" +
+    '</div>' +
+  '</div>' +
+
+  '<div class="map-annotated" style="aspect-ratio: 4/3; margin-bottom: 20px;">' +
+    '<svg class="map-overlay-svg" viewBox="0 0 800 600" preserveAspectRatio="none">' +
+      '<polygon points="80,60 740,70 730,560 70,540" fill="none" stroke="#f4cc5f" stroke-width="3" stroke-dasharray="8 6" opacity="0.9"/>' +
+      // House
+      '<rect x="280" y="220" width="180" height="110" fill="rgba(250,243,222,0.85)" stroke="#8b3e1d" stroke-width="2"/>' +
+      '<text x="370" y="280" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="14" fill="#2a3820">house</text>' +
+      // Driveway
+      '<polygon points="460,245 580,250 585,340 465,335" fill="rgba(46,42,31,0.3)" stroke="#4a3a22" stroke-width="1"/>' +
+      // EXISTING orchard (locked, darker green)
+      '<g opacity="0.9">' +
+        '<circle cx="140" cy="140" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+        '<circle cx="195" cy="145" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+        '<circle cx="140" cy="200" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+        '<circle cx="195" cy="205" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+        '<circle cx="260" cy="155" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+        '<circle cx="260" cy="210" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+      '</g>' +
+      // NEW orchard additions (proposed, dashed circles)
+      '<g>' +
+        '<circle cx="140" cy="260" r="18" fill="rgba(181,85,42,0.3)" stroke="#b5552a" stroke-width="2" stroke-dasharray="4 3"/>' +
+        '<circle cx="195" cy="265" r="18" fill="rgba(181,85,42,0.3)" stroke="#b5552a" stroke-width="2" stroke-dasharray="4 3"/>' +
+        '<circle cx="140" cy="320" r="18" fill="rgba(181,85,42,0.3)" stroke="#b5552a" stroke-width="2" stroke-dasharray="4 3"/>' +
+        '<circle cx="195" cy="325" r="18" fill="rgba(181,85,42,0.3)" stroke="#b5552a" stroke-width="2" stroke-dasharray="4 3"/>' +
+      '</g>' +
+      '<text x="165" y="105" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="11" fill="#f4cc5f">orchard · 6 existing + 4 new</text>' +
+      // EXISTING raised bed (locked)
+      '<rect x="500" y="360" width="80" height="40" fill="rgba(181,85,42,0.55)" stroke="#8b3e1d" stroke-width="2"/>' +
+      // NEW kitchen garden expansion
+      '<rect x="500" y="410" width="180" height="60" fill="rgba(181,85,42,0.3)" stroke="#b5552a" stroke-width="2" stroke-dasharray="5 4"/>' +
+      '<text x="590" y="445" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="11" fill="#faf3de">kitchen garden · expanded</text>' +
+      // NEW corn block (west side)
+      '<g>' +
+        '<rect x="110" y="370" width="140" height="140" fill="rgba(244,204,95,0.25)" stroke="#f4cc5f" stroke-width="2" stroke-dasharray="5 4"/>' +
+        // row lines
+        '<line x1="125" y1="378" x2="125" y2="502" stroke="#f4cc5f" stroke-width="1" opacity="0.7"/>' +
+        '<line x1="140" y1="378" x2="140" y2="502" stroke="#f4cc5f" stroke-width="1" opacity="0.7"/>' +
+        '<line x1="155" y1="378" x2="155" y2="502" stroke="#f4cc5f" stroke-width="1" opacity="0.7"/>' +
+        '<line x1="170" y1="378" x2="170" y2="502" stroke="#f4cc5f" stroke-width="1" opacity="0.7"/>' +
+        '<line x1="185" y1="378" x2="185" y2="502" stroke="#f4cc5f" stroke-width="1" opacity="0.7"/>' +
+        '<line x1="200" y1="378" x2="200" y2="502" stroke="#f4cc5f" stroke-width="1" opacity="0.7"/>' +
+        '<line x1="215" y1="378" x2="215" y2="502" stroke="#f4cc5f" stroke-width="1" opacity="0.7"/>' +
+        '<line x1="230" y1="378" x2="230" y2="502" stroke="#f4cc5f" stroke-width="1" opacity="0.7"/>' +
+      '</g>' +
+      '<text x="180" y="525" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="11" fill="#f4cc5f">corn block · 12 rows</text>' +
+      // NEW cut flower row (south side)
+      '<rect x="295" y="480" width="300" height="22" fill="rgba(217,107,122,0.4)" stroke="#c23a5a" stroke-width="2" stroke-dasharray="5 4"/>' +
+      '<text x="445" y="518" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="11" fill="#faf3de">cut flowers</text>' +
+      // Maple (unchanged)
+      '<circle cx="660" cy="340" r="45" fill="rgba(46,58,32,0.6)" stroke="#2a3820" stroke-width="2"/>' +
+      '<text x="660" y="345" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="11" fill="#f4cc5f">maple</text>' +
+    '</svg>' +
+    '<div class="map-compass">N ↑</div>' +
+    '<div class="map-scale">50 ft</div>' +
+  '</div>' +
+
+  '<div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; padding: 12px 16px; background: var(--paper-ivory); border: 1px solid var(--stone-soft); border-radius: 6px; font-family: var(--serif); font-size: 12.5px; color: var(--forest-deep);">' +
+    '<span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 14px; height: 14px; border-radius: 50%; background: rgba(85,107,58,0.7); border: 1.5px solid #2a3820;"></span>Existing (locked)</span>' +
+    '<span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 14px; height: 14px; border-radius: 50%; background: rgba(181,85,42,0.3); border: 1.5px dashed #b5552a;"></span>Proposed (draggable)</span>' +
+    '<div style="flex: 1;"></div>' +
+    '<span style="font-style: italic; color: var(--ink-muted); font-size: 11.5px;">Click any proposed plot to resize or swap it</span>' +
+  '</div>' +
+
+  '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">' +
+    proposedPlotCard('Kitchen garden', '4 × 20 ft (expanded)', 'south side, next to existing bed', 'new', 'Full sun, 10 min from back door, runs drip to hose bib') +
+    proposedPlotCard('Orchard', '10 trees total', 'northwest block', 'mixed', '6 existing + 4 new apricot/plum, 15 ft spacing') +
+    proposedPlotCard('Corn block', '12 rows × 25 ft', 'west side', 'new', 'Upwind of everything else, full sun, minimal water') +
+    proposedPlotCard('Cut flower row', '2 × 25 ft', 'south walkway', 'new', 'Full sun, high visibility from house, succession-sown') +
+  '</div>';
+}
+
+function proposedPlotCard(name, size, location, status, reason) {
+  var tag = status === 'new'
+    ? '<span style="background: var(--terra); color: var(--cream); font-family: var(--serif); font-style: italic; font-size: 10px; padding: 2px 8px; border-radius: 10px;">new</span>'
+    : '<span style="background: var(--ivy); color: var(--cream); font-family: var(--serif); font-style: italic; font-size: 10px; padding: 2px 8px; border-radius: 10px;">existing + new</span>';
+  return '<div style="background: var(--paper-ivory); border: 1px solid var(--stone-soft); border-radius: 6px; padding: 14px 16px;">' +
+    '<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; gap: 8px;">' +
+      '<span style="font-family: var(--serif); font-weight: 500; font-size: 16px; color: var(--forest-deep);">' + name + '</span>' +
+      tag +
+    '</div>' +
+    '<div style="font-family: var(--serif); font-style: italic; font-size: 12.5px; color: var(--ink-muted); margin-bottom: 8px;">' + size + ' · ' + location + '</div>' +
+    '<div style="font-family: var(--serif); font-size: 13px; color: var(--ink-soft); line-height: 1.5; padding-top: 8px; border-top: 1px dashed var(--stone);">' + reason + '</div>' +
+  '</div>';
+}
+
+function gnomeSvgHTML() {
+  return '<svg viewBox="0 0 80 100" width="100%" height="100%">' +
+    '<ellipse cx="40" cy="96" rx="18" ry="2" fill="#8b6f47" opacity="0.3"/>' +
+    '<path d="M40 8 Q 20 42, 16 46 L 64 46 Q 60 42, 40 8 Z" fill="#b5552a"/>' +
+    '<ellipse cx="40" cy="47" rx="24" ry="2.5" fill="#8b3e1d"/>' +
+    '<circle cx="40" cy="10" r="3" fill="#f3e9c9"/>' +
+    '<ellipse cx="40" cy="52" rx="13" ry="10" fill="#e8c4a0"/>' +
+    '<path d="M24 49 Q 22 72, 40 76 Q 58 72, 56 49 Q 53 64, 40 66 Q 27 64, 24 49 Z" fill="#f3e9c9"/>' +
+    '<path d="M31 54 Q 40 57, 49 54 Q 43 59, 40 59 Q 37 59, 31 54 Z" fill="#f3e9c9"/>' +
+    '<circle cx="40" cy="53" r="3" fill="#d98e7e"/>' +
+    '<path d="M33 47 Q 35 48.5, 37 47 M 43 47 Q 45 48.5, 47 47" stroke="#2a4428" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
+    '<path d="M27 73 Q 25 92, 40 94 Q 55 92, 53 73 Z" fill="#556b3a"/>' +
+    '<rect x="29" y="86" width="22" height="2.8" fill="#2e2a1f"/>' +
+    '<path d="M28 79 L 20 83 M 52 79 L 60 83" stroke="#556b3a" stroke-width="3.5" stroke-linecap="round"/>' +
+    '<ellipse cx="34" cy="96" rx="5.5" ry="2.5" fill="#2e2a1f"/>' +
+    '<ellipse cx="46" cy="96" rx="5.5" ry="2.5" fill="#2e2a1f"/>' +
+  '</svg>';
+}
+
+// ============ STEP 7: HOMESTEAD DASHBOARD ============
+function renderStep7() {
+  return '<div class="page-intro">' +
+    '<div class="eyebrow">Your homestead</div>' +
+    '<h1>' + STEP_META[6].title + '</h1>' +
+    '<p class="deck">' + STEP_META[6].deck + '</p>' +
+  '</div>' +
+
+  '<div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 22px; margin-bottom: 22px;">' +
+    '<div class="map-annotated" style="aspect-ratio: 4/3;">' +
+      '<svg class="map-overlay-svg" viewBox="0 0 800 600" preserveAspectRatio="none">' +
+        '<polygon points="80,60 740,70 730,560 70,540" fill="none" stroke="#f4cc5f" stroke-width="3" stroke-dasharray="8 6" opacity="0.9"/>' +
+        '<rect x="280" y="220" width="180" height="110" fill="rgba(250,243,222,0.85)" stroke="#8b3e1d" stroke-width="2"/>' +
+        '<text x="370" y="280" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="14" fill="#2a3820">house</text>' +
+        '<polygon points="460,245 580,250 585,340 465,335" fill="rgba(46,42,31,0.3)" stroke="#4a3a22" stroke-width="1"/>' +
+        // All orchard (clickable)
+        '<g class="clickable-plot" data-plot="orchard">' +
+          '<rect x="100" y="95" width="195" height="245" fill="rgba(85,107,58,0.15)" stroke="#556b3a" stroke-width="2" rx="4"/>' +
+          '<circle cx="140" cy="140" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="195" cy="145" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="250" cy="150" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="140" cy="200" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="195" cy="205" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="260" cy="210" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="140" cy="260" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="195" cy="265" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="140" cy="320" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<circle cx="195" cy="325" r="18" fill="rgba(85,107,58,0.7)" stroke="#2a3820" stroke-width="1.5"/>' +
+          '<text x="197" y="100" text-anchor="middle" font-family="Fraunces" font-weight="500" font-size="13" fill="#f4cc5f">Orchard</text>' +
+        '</g>' +
+        // Kitchen garden
+        '<g class="clickable-plot" data-plot="kitchen">' +
+          '<rect x="495" y="355" width="195" height="80" fill="rgba(181,85,42,0.4)" stroke="#8b3e1d" stroke-width="2" rx="3"/>' +
+          '<text x="592" y="402" text-anchor="middle" font-family="Fraunces" font-weight="500" font-size="13" fill="#faf3de">Kitchen garden</text>' +
+        '</g>' +
+        // Corn block
+        '<g class="clickable-plot" data-plot="corn">' +
+          '<rect x="110" y="370" width="140" height="140" fill="rgba(244,204,95,0.3)" stroke="#c9a24a" stroke-width="2" rx="3"/>' +
+          '<line x1="125" y1="378" x2="125" y2="502" stroke="#c9a24a" stroke-width="1" opacity="0.7"/>' +
+          '<line x1="140" y1="378" x2="140" y2="502" stroke="#c9a24a" stroke-width="1" opacity="0.7"/>' +
+          '<line x1="155" y1="378" x2="155" y2="502" stroke="#c9a24a" stroke-width="1" opacity="0.7"/>' +
+          '<line x1="170" y1="378" x2="170" y2="502" stroke="#c9a24a" stroke-width="1" opacity="0.7"/>' +
+          '<line x1="185" y1="378" x2="185" y2="502" stroke="#c9a24a" stroke-width="1" opacity="0.7"/>' +
+          '<line x1="200" y1="378" x2="200" y2="502" stroke="#c9a24a" stroke-width="1" opacity="0.7"/>' +
+          '<line x1="215" y1="378" x2="215" y2="502" stroke="#c9a24a" stroke-width="1" opacity="0.7"/>' +
+          '<line x1="230" y1="378" x2="230" y2="502" stroke="#c9a24a" stroke-width="1" opacity="0.7"/>' +
+          '<text x="180" y="440" text-anchor="middle" font-family="Fraunces" font-weight="500" font-size="13" fill="#2a3820">Corn</text>' +
+        '</g>' +
+        // Cut flowers
+        '<g class="clickable-plot" data-plot="flowers">' +
+          '<rect x="290" y="475" width="310" height="30" fill="rgba(217,107,122,0.45)" stroke="#c23a5a" stroke-width="2" rx="2"/>' +
+          '<text x="445" y="495" text-anchor="middle" font-family="Fraunces" font-weight="500" font-size="12" fill="#faf3de">Cut flowers</text>' +
+        '</g>' +
+        // Maple (not clickable, just a feature)
+        '<circle cx="660" cy="340" r="45" fill="rgba(46,58,32,0.6)" stroke="#2a3820" stroke-width="2"/>' +
+        '<text x="660" y="345" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="11" fill="#f4cc5f">maple</text>' +
+      '</svg>' +
+      '<div class="map-compass">N ↑</div>' +
+      '<div class="map-scale">50 ft</div>' +
+    '</div>' +
+
+    '<div>' +
+      '<div class="panel" style="margin-bottom: 12px;">' +
+        '<div class="panel-title">This week on your place</div>' +
+        '<div style="display: flex; flex-direction: column; gap: 10px; font-family: var(--serif); font-size: 13.5px; color: var(--forest-deep); line-height: 1.5;">' +
+          weekTask('orchard', 'Dormant spray peaches', 'Before bud break, Sat is dry') +
+          weekTask('kitchen', 'Start tomato seeds indoors', '8 weeks before last frost') +
+          weekTask('orchard', 'Check cherry buds for black knot', 'As pink tips appear') +
+          weekTask('flowers', 'Order seed starts', 'Zinnias, snapdragons, cosmos') +
+          weekTask('corn', 'Too early — hold', 'Plant May 15 when soil hits 60°F') +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>' +
+
+  '<div style="font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--terra); margin-bottom: 12px;">Your plots</div>' +
+  '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 22px;">' +
+    plotDashCard('Orchard', 'orchard', '10 trees · northwest block', 'Year 1 of 4 new · harvest begins 2027', 'dormant', 'peach') +
+    plotDashCard('Kitchen garden', 'kitchen', '~80 sq ft · south of house', '46 plants chosen · planting starts Apr 10', 'planning', 'tomato') +
+    plotDashCard('Corn block', 'corn', '12 rows × 25 ft · west side', "Silver Queen · plant out May 15", 'waiting', 'corn') +
+    plotDashCard('Cut flowers', 'flowers', '2 × 25 ft · south walkway', 'Zinnias, snapdragons, cosmos', 'planning', 'flower') +
+  '</div>' +
+
+  '<div style="padding: 18px 22px; background: var(--paper-warm); border-radius: 6px; border-left: 3px solid var(--ivy); font-family: var(--serif); font-size: 14px; color: var(--forest-deep); line-height: 1.6;">' +
+    '<div style="font-style: italic; color: var(--terra); font-size: 12px; margin-bottom: 4px; font-family: var(--sans); letter-spacing: 0.18em; text-transform: uppercase;">Your gnome&rsquo;s Sunday note</div>' +
+    "<strong style='font-style: italic; color: var(--terra); font-weight: 500;'>Good morning.</strong> Frost risk this week is low, but Thursday night might dip to 34°F — your peach buds are still dormant and safe. I'd use the dry weather Saturday to get that dormant oil spray on before the buds break. Start tomato seeds indoors today if you haven't — you're at the 8-week mark. The corn patch needs nothing from you yet." +
+  '</div>';
+}
+
+function weekTask(plot, task, detail) {
+  var colorMap = {
+    orchard: 'rgba(85,107,58,0.7)',
+    kitchen: 'rgba(181,85,42,0.55)',
+    flowers: 'rgba(217,107,122,0.55)',
+    corn: 'rgba(201,162,74,0.6)'
+  };
+  return '<div style="display: flex; gap: 10px; align-items: flex-start; padding-bottom: 8px; border-bottom: 1px dotted var(--stone-soft);">' +
+    '<span style="width: 10px; height: 10px; border-radius: 50%; background: ' + colorMap[plot] + '; margin-top: 5px; flex-shrink: 0;"></span>' +
+    '<div>' +
+      '<div style="font-weight: 500; color: var(--forest-deep); margin-bottom: 1px;">' + task + '</div>' +
+      '<div style="font-style: italic; font-size: 12px; color: var(--ink-muted);">' + detail + '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function plotDashCard(name, id, meta, status, statusType, icon) {
+  var iconMap = {
+    peach: '<svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="13" r="6" fill="#e89338"/><path d="M8 8 Q 10 6 12 7 Q 14 6 16 8" stroke="#556b3a" stroke-width="1.2" fill="none"/></svg>',
+    tomato: '<svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 6 L 12 8 L 16 6 L 15 9 L 9 9 Z" fill="#556b3a"/><circle cx="12" cy="13" r="5" fill="#b5552a"/></svg>',
+    corn: '<svg viewBox="0 0 24 24" width="22" height="22"><path d="M10 4 Q 8 10 10 20 Q 12 22 14 20 Q 16 10 14 4 Q 12 2 10 4 Z" fill="#e8be4d"/><path d="M10 4 Q 7 8 8 12" stroke="#556b3a" stroke-width="1.2" fill="none"/><path d="M14 4 Q 17 8 16 12" stroke="#556b3a" stroke-width="1.2" fill="none"/></svg>',
+    flower: '<svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="9" r="3" fill="#b5552a"/><circle cx="8" cy="7" r="2.5" fill="#d96b7a"/><circle cx="16" cy="7" r="2.5" fill="#d96b7a"/><circle cx="8" cy="12" r="2.5" fill="#e89338"/><circle cx="16" cy="12" r="2.5" fill="#e89338"/><circle cx="12" cy="9" r="1.5" fill="#c9a24a"/><line x1="12" y1="12" x2="12" y2="20" stroke="#556b3a" stroke-width="1.5"/></svg>'
+  };
+  var statusColor = { dormant: 'var(--ink-muted)', planning: 'var(--terra)', waiting: 'var(--moss)', active: 'var(--ivy)' };
+  return '<div class="plot-dash-card" data-plot="' + id + '" style="background: var(--paper-ivory); border: 1px solid var(--stone-soft); border-radius: 6px; padding: 14px 16px; cursor: pointer; transition: all 0.15s;">' +
+    '<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 6px;">' +
+      '<div style="display: flex; align-items: center; gap: 8px;">' +
+        iconMap[icon] +
+        '<span style="font-family: var(--serif); font-weight: 500; font-size: 16px; color: var(--forest-deep);">' + name + '</span>' +
+      '</div>' +
+      '<span style="font-family: var(--serif); font-style: italic; font-size: 11px; color: ' + statusColor[statusType] + ';">' + statusType + '</span>' +
+    '</div>' +
+    '<div style="font-family: var(--serif); font-style: italic; font-size: 12.5px; color: var(--ink-muted); margin-bottom: 6px;">' + meta + '</div>' +
+    '<div style="font-family: var(--serif); font-size: 13px; color: var(--forest-deep); padding-top: 8px; border-top: 1px dashed var(--stone-soft); display: flex; justify-content: space-between; align-items: center;">' +
+      '<span>' + status + '</span>' +
+      '<span style="font-family: var(--serif); font-style: italic; font-size: 12px; color: var(--terra);">tend →</span>' +
+    '</div>' +
+  '</div>';
+}
+
+var STEPS = [renderStep1, renderStep2, renderStep3, renderStep4, renderStep5, renderStep6, renderStep7];
+
+function render() {
+  try {
+    var step = state.step;
+    var totalSteps = 7;
+
+    document.getElementById('step-text').textContent = step < 7 ? 'Setup step ' + step + ' of 7' : 'Home';
+
+    var pills = '';
+    for (var i = 1; i <= totalSteps; i++) {
+      var cls = 'step-pill';
+      if (i === step) cls += ' current';
+      else if (i < step) cls += ' on';
+      pills += '<span class="' + cls + '"></span>';
+    }
+    document.getElementById('step-pills').innerHTML = pills;
+
+    var main = document.getElementById('main');
+    main.innerHTML = '<div class="step-content">' + STEPS[step - 1]() + '</div>';
+
+    document.getElementById('back-btn').style.visibility = step === 1 ? 'hidden' : 'visible';
+    document.getElementById('next-btn').textContent = step === totalSteps ? 'Start tending →' : CTAS[step - 1];
+    document.getElementById('step-name').textContent = STEP_META[step - 1].name;
+
+    // Wire up goal card toggles on step 5
+    if (step === 5) {
+      main.querySelectorAll('.goal-card').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+          if (e.target.tagName !== 'INPUT') {
+            var cb = el.querySelector('input[type=checkbox]');
+            cb.checked = !cb.checked;
+          }
+          el.classList.toggle('checked');
+        });
+      });
+    }
+
+    // Wire up plot cards on step 7
+    if (step === 7) {
+      main.querySelectorAll('.plot-dash-card').forEach(function(el) {
+        el.addEventListener('click', function() {
+          var plot = el.getAttribute('data-plot');
+          alert('This would open the detailed planning flow for: ' + plot + '\n\n(The 5-step kitchen garden flow we already designed would live here, tailored to each plot type.)');
+        });
+      });
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    document.getElementById('main').innerHTML = '<div style="padding: 40px; color: #8b3e1d; font-family: monospace;">Error: ' + (err.message || err) + '</div>';
+    console.error(err);
+  }
+}
+
+document.getElementById('next-btn').addEventListener('click', function() {
+  if (state.step < 7) { state.step++; render(); }
+  else { alert('You would now drill into individual plots to plan them in detail.'); }
+});
+
+document.getElementById('back-btn').addEventListener('click', function() {
+  if (state.step > 1) { state.step--; render(); }
+});
+
+render();
+})();
+</script>
+
+</body>
+</html>
