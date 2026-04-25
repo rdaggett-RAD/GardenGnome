@@ -30,6 +30,11 @@ interface PollinationWarning {
   compatiblePollinators: CompatiblePollinator[];
 }
 
+interface SuitabilityInfo {
+  status: 'suitable' | 'outside_zone' | 'needs_chill';
+  reason: string;
+}
+
 const sourceLabels: Record<string, string> = {
   trees: 'Tree',
   kitchen_plants: 'Kitchen',
@@ -43,6 +48,22 @@ const confidenceColors: Record<string, string> = {
   low: 'bg-terra',
 };
 
+const suitabilityLabels: Record<SuitabilityInfo['status'], string> = {
+  suitable: 'Suitable',
+  outside_zone: 'Outside zone',
+  needs_chill: 'Needs more chill hours',
+};
+
+const suitabilityClasses: Record<SuitabilityInfo['status'], string> = {
+  suitable: 'bg-moss/15 text-forest-deep border border-moss/30',
+  outside_zone: 'bg-terra/15 text-terra-deep border border-terra/30',
+  needs_chill: 'bg-terra/15 text-terra-deep border border-terra/30',
+};
+
+function suitabilityKey(variety: Variety) {
+  return `${variety.variety_table}:${variety.variety_id}`;
+}
+
 export function AddPlantingForm({
   plotId,
   userId,
@@ -50,6 +71,7 @@ export function AddPlantingForm({
   isOrchardPlot,
   existingTreeVarietyIds,
   treeDetails,
+  suitability,
   trigger = 'button',
 }: {
   plotId: string;
@@ -58,6 +80,7 @@ export function AddPlantingForm({
   isOrchardPlot: boolean;
   existingTreeVarietyIds: string[];
   treeDetails: TreeDetail[];
+  suitability: Record<string, SuitabilityInfo>;
   trigger?: 'button' | 'empty';
 }) {
   const router = useRouter();
@@ -263,6 +286,7 @@ export function AddPlantingForm({
                   const active =
                     selected?.variety_table === variety.variety_table &&
                     selected?.variety_id === variety.variety_id;
+                  const suitabilityInfo = suitability[suitabilityKey(variety)];
 
                   return (
                     <li key={`${variety.variety_table}-${variety.variety_id}`}>
@@ -278,9 +302,19 @@ export function AddPlantingForm({
                               {variety.species.replace(/_/g, ' ')}
                             </p>
                           </div>
-                          <span className="badge bg-paper-warm text-ink-soft">
-                            {sourceLabels[variety.variety_table]}
-                          </span>
+                          <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                            <span className="badge bg-paper-warm text-ink-soft">
+                              {sourceLabels[variety.variety_table]}
+                            </span>
+                            {suitabilityInfo && (
+                              <span
+                                className={`badge ${suitabilityClasses[suitabilityInfo.status]}`}
+                                title={suitabilityInfo.reason}
+                              >
+                                {suitabilityLabels[suitabilityInfo.status]}
+                              </span>
+                            )}
+                          </div>
                         </div>
 
                         <p className="text-xs text-ink-muted italic mt-2 truncate">
@@ -292,6 +326,13 @@ export function AddPlantingForm({
                             {variety.notes}
                           </p>
                         )}
+
+                        {suitabilityInfo &&
+                          suitabilityInfo.status !== 'suitable' && (
+                            <p className="text-xs text-terra-deep mt-3">
+                              {suitabilityInfo.reason}
+                            </p>
+                          )}
 
                         <div className="flex items-center justify-between gap-3 mt-4 pt-3 border-t border-stone-soft">
                           <div className="flex items-center gap-2">

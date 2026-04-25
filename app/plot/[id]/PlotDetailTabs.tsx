@@ -15,6 +15,11 @@ interface TreeDetail {
   self_fertile: boolean | null;
 }
 
+interface SuitabilityInfo {
+  status: 'suitable' | 'outside_zone' | 'needs_chill';
+  reason: string;
+}
+
 interface PlantingCard {
   id: string;
   varietyName: string;
@@ -47,6 +52,7 @@ export function PlotDetailTabs({
   isOrchardPlot,
   existingTreeVarietyIds,
   treeDetails,
+  suitability,
 }: {
   plantings: PlantingCard[];
   varieties: Variety[];
@@ -55,6 +61,7 @@ export function PlotDetailTabs({
   isOrchardPlot: boolean;
   existingTreeVarietyIds: string[];
   treeDetails: TreeDetail[];
+  suitability: Record<string, SuitabilityInfo>;
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('plantings');
 
@@ -98,6 +105,7 @@ export function PlotDetailTabs({
                 isOrchardPlot={isOrchardPlot}
                 existingTreeVarietyIds={existingTreeVarietyIds}
                 treeDetails={treeDetails}
+                suitability={suitability}
               />
             </div>
           )}
@@ -112,6 +120,7 @@ export function PlotDetailTabs({
               isOrchardPlot={isOrchardPlot}
               existingTreeVarietyIds={existingTreeVarietyIds}
               treeDetails={treeDetails}
+              suitability={suitability}
               trigger="empty"
             />
           )}

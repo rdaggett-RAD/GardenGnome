@@ -12,9 +12,17 @@ import type {
 import { PlotDetailTabs } from './PlotDetailTabs';
 
 type Plot = Database['public']['Tables']['plots']['Row'];
+type Property = Database['public']['Tables']['properties']['Row'];
 type Planting = Database['public']['Tables']['plantings']['Row'];
 type Variety = Database['public']['Views']['all_varieties']['Row'];
 type ExistingTreePlanting = Pick<Planting, 'variety_id' | 'variety_table'>;
+type TreeSuitability =
+  Database['public']['Functions']['trees_suitable_for_property']['Returns'][number];
+
+interface SuitabilityInfo {
+  status: 'suitable' | 'outside_zone' | 'needs_chill';
+  reason: string;
+}
 
 const categoryLabels: Record<PlotCategory, string> = {
   orchard: 'Orchard',
@@ -100,6 +108,103 @@ function buildExistingTreeIds(plantings: ExistingTreePlanting[] | null): string[
   );
 }
 
+function parseZoneNumber(zone: string | null): number | null {
+  if (!zone) return null;
+  const match = zone.match(/\d+/);
+  return match ? Number(match[0]) : null;
+}
+
+function suitabilityKey(varietyTable: string, varietyId: string) {
+  return `${varietyTable}:${varietyId}`;
+}
+
+function zoneFits(
+  zone: number,
+  min: number | null,
+  max: number | null
+): boolean {
+  if (min === null || max === null) return true;
+  return zone >= min && zone <= max;
+}
+
+function buildTreeSuitability(
+  rows: TreeSuitability[] | null
+): Record<string, SuitabilityInfo> {
+  return Object.fromEntries(
+    (rows ?? []).map((row) => {
+      const status: SuitabilityInfo['status'] = !row.zone_fit
+        ? 'outside_zone'
+        : !row.chill_fit
+          ? 'needs_chill'
+          : 'suitable';
+
+      return [
+        suitabilityKey('trees', row.variety_id),
+        {
+          status,
+          reason: row.notes,
+        },
+      ];
+    })
+  );
+}
+
+function buildZoneSuitability(
+  zone: number,
+  varieties: Variety[],
+  kitchenRows: Array<{
+    variety_id: string;
+    usda_zone_min: number | null;
+    usda_zone_max: number | null;
+  }>,
+  flowerRows: Array<{
+    variety_id: string;
+    usda_zone_perennial_min: number | null;
+    usda_zone_perennial_max: number | null;
+  }>
+): Record<string, SuitabilityInfo> {
+  const kitchenById = new Map(
+    kitchenRows.map((row) => [row.variety_id, row])
+  );
+  const flowersById = new Map(flowerRows.map((row) => [row.variety_id, row]));
+  const entries: Array<[string, SuitabilityInfo]> = [];
+
+  for (const variety of varieties) {
+    if (variety.variety_table === 'kitchen_plants') {
+      const row = kitchenById.get(variety.variety_id);
+      if (!row) continue;
+      const fits = zoneFits(zone, row.usda_zone_min, row.usda_zone_max);
+      entries.push([
+        suitabilityKey(variety.variety_table, variety.variety_id),
+        {
+          status: fits ? 'suitable' : 'outside_zone',
+          reason: fits
+            ? 'Suitable'
+            : `Outside hardiness zone (${row.usda_zone_min}-${row.usda_zone_max})`,
+        },
+      ]);
+    }
+
+    if (variety.variety_table === 'cut_flowers') {
+      const row = flowersById.get(variety.variety_id);
+      if (!row) continue;
+      const min = row.usda_zone_perennial_min;
+      const max = row.usda_zone_perennial_max;
+      if (min === null || max === null) continue;
+      const fits = zoneFits(zone, min, max);
+      entries.push([
+        suitabilityKey(variety.variety_table, variety.variety_id),
+        {
+          status: fits ? 'suitable' : 'outside_zone',
+          reason: fits ? 'Suitable' : `Outside hardiness zone (${min}-${max})`,
+        },
+      ]);
+    }
+  }
+
+  return Object.fromEntries(entries);
+}
+
 export default async function PlotDetailPage({
   params,
 }: {
@@ -148,6 +253,13 @@ export default async function PlotDetailPage({
   if (!plot) {
     notFound();
   }
+
+  const { data: property } = await supabase
+    .from('properties')
+    .select('id,usda_zone,annual_chill_hours')
+    .eq('id', plot.property_id)
+    .eq('user_id', user.id)
+    .maybeSingle();
 
   const { data: plantings, error: plantingsError } = await supabase
     .from('plantings')
@@ -202,10 +314,53 @@ export default async function PlotDetailPage({
           .select('variety_id,variety_name,self_fertile')
       : { data: [] };
 
+  const zoneNumber = parseZoneNumber((property as Pick<
+    Property,
+    'usda_zone'
+  > | null)?.usda_zone ?? null);
+
+  const { data: treeSuitability } =
+    zoneNumber !== null && plot.category === 'orchard'
+      ? await supabase.rpc('trees_suitable_for_property', {
+          zone_num: zoneNumber,
+          available_chill_hours:
+            (property as Pick<Property, 'annual_chill_hours'> | null)
+              ?.annual_chill_hours ?? 0,
+        })
+      : { data: [] };
+
+  const { data: kitchenZoneRows } =
+    zoneNumber !== null
+      ? await supabase
+          .from('kitchen_plants')
+          .select('variety_id,usda_zone_min,usda_zone_max')
+      : { data: [] };
+
+  const { data: flowerZoneRows } =
+    zoneNumber !== null
+      ? await supabase
+          .from('cut_flowers')
+          .select(
+            'variety_id,usda_zone_perennial_min,usda_zone_perennial_max'
+          )
+      : { data: [] };
+
   const plantingCards = buildPlantingCards(plantings ?? [], varieties ?? []);
   const existingTreeVarietyIds = buildExistingTreeIds(
     existingOrchardTreePlantings ?? []
   );
+  const suitability =
+    zoneNumber === null
+      ? {}
+      : {
+          ...buildTreeSuitability(treeSuitability ?? []),
+          ...buildZoneSuitability(
+            zoneNumber,
+            availableVarieties ?? [],
+            kitchenZoneRows ?? [],
+            flowerZoneRows ?? []
+          ),
+        };
 
   return (
     <div className="flex min-h-screen">
@@ -268,6 +423,7 @@ export default async function PlotDetailPage({
               isOrchardPlot={plot.category === 'orchard'}
               existingTreeVarietyIds={existingTreeVarietyIds}
               treeDetails={treeDetails ?? []}
+              suitability={suitability}
             />
           )}
         </div>
