@@ -162,6 +162,21 @@ When asking AI to build a new feature, **point it at three files first**:
 The House Rules ensure consistency: every CTA wired up, every modal
 dismissable, every form validating, every list with a proper empty state.
 
+**Build expectations for autonomous AI coding:**
+
+- Codex should run `npm run typecheck`, `npm run lint`, and `npm run build`
+  before declaring work done. Reports without verification are incomplete.
+- Codex should trace happy paths and error paths in its head before
+  reporting done. "I implemented the variety picker" is not enough — see
+  House Rules sections "Verification" and "Definition of done."
+- Codex should STOP and ask the user when it needs a secret, an API key,
+  a Supabase migration to be run, an Edge Function deployed, or any
+  third-party config (Render env vars, Supabase Auth redirect URLs).
+  See House Rules section "Stopping points."
+- Codex should NEVER create new Supabase projects, modify `.env*` files
+  programmatically, or run migrations via CLI tooling. See House Rules
+  section "Database safety."
+
 ### Working manually
 
 ```bash
