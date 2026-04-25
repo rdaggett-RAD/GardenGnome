@@ -90,6 +90,15 @@ export function LoginForm() {
           />
         </FormField>
 
+        <div className="text-right">
+          <Link
+            href="/auth/forgot-password"
+            className="text-sm text-ivy hover:text-forest underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ivy rounded"
+          >
+            Forgot password?
+          </Link>
+        </div>
+
         {errors.form && (
           <div
             role="alert"
