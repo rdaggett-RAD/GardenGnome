@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { NotebookText, Sprout, Wheat } from 'lucide-react';
+import { NotebookText, Wheat } from 'lucide-react';
 import { Button, EmptyState } from '@/components/ui';
+import type { Database } from '@/lib/supabase/types';
+import { AddPlantingForm } from './AddPlantingForm';
 
 type TabId = 'plantings' | 'notes' | 'harvests';
+type Variety = Database['public']['Views']['all_varieties']['Row'];
 
 interface PlantingCard {
   id: string;
@@ -32,8 +35,14 @@ const sourceLabels: Record<string, string> = {
 
 export function PlotDetailTabs({
   plantings,
+  varieties,
+  plotId,
+  userId,
 }: {
   plantings: PlantingCard[];
+  varieties: Variety[];
+  plotId: string;
+  userId: string;
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('plantings');
 
@@ -67,17 +76,28 @@ export function PlotDetailTabs({
         aria-labelledby="plantings-tab"
         hidden={activeTab !== 'plantings'}
       >
-        {plantings.length > 0 ? (
-          <PlantingList plantings={plantings} />
-        ) : (
-          <EmptyState
-            icon={Sprout}
-            title="No plantings yet"
-            description="This plot is ready for trees, vegetables, flowers, or field crops."
-            actionLabel="Browse varieties"
-            actionHref="/varieties"
-          />
-        )}
+        <div className="space-y-4">
+          {plantings.length > 0 && (
+            <div className="flex justify-end">
+              <AddPlantingForm
+                plotId={plotId}
+                userId={userId}
+                varieties={varieties}
+              />
+            </div>
+          )}
+
+          {plantings.length > 0 ? (
+            <PlantingList plantings={plantings} />
+          ) : (
+            <AddPlantingForm
+              plotId={plotId}
+              userId={userId}
+              varieties={varieties}
+              trigger="empty"
+            />
+          )}
+        </div>
       </div>
 
       <div
