@@ -9,6 +9,12 @@ import { AddPlantingForm } from './AddPlantingForm';
 type TabId = 'plantings' | 'notes' | 'harvests';
 type Variety = Database['public']['Views']['all_varieties']['Row'];
 
+interface TreeDetail {
+  variety_id: string;
+  variety_name: string;
+  self_fertile: boolean | null;
+}
+
 interface PlantingCard {
   id: string;
   varietyName: string;
@@ -38,11 +44,17 @@ export function PlotDetailTabs({
   varieties,
   plotId,
   userId,
+  isOrchardPlot,
+  existingTreeVarietyIds,
+  treeDetails,
 }: {
   plantings: PlantingCard[];
   varieties: Variety[];
   plotId: string;
   userId: string;
+  isOrchardPlot: boolean;
+  existingTreeVarietyIds: string[];
+  treeDetails: TreeDetail[];
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('plantings');
 
@@ -83,6 +95,9 @@ export function PlotDetailTabs({
                 plotId={plotId}
                 userId={userId}
                 varieties={varieties}
+                isOrchardPlot={isOrchardPlot}
+                existingTreeVarietyIds={existingTreeVarietyIds}
+                treeDetails={treeDetails}
               />
             </div>
           )}
@@ -94,6 +109,9 @@ export function PlotDetailTabs({
               plotId={plotId}
               userId={userId}
               varieties={varieties}
+              isOrchardPlot={isOrchardPlot}
+              existingTreeVarietyIds={existingTreeVarietyIds}
+              treeDetails={treeDetails}
               trigger="empty"
             />
           )}

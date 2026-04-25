@@ -6,6 +6,7 @@ import { Plus, Search, Sprout, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import {
   Button,
+  DismissibleBanner,
   EmptyState,
   FormField,
   Input,
@@ -15,6 +16,19 @@ import {
 import type { Database } from '@/lib/supabase/types';
 
 type Variety = Database['public']['Views']['all_varieties']['Row'];
+type CompatiblePollinator =
+  Database['public']['Functions']['list_compatible_pollinators']['Returns'][number];
+
+interface TreeDetail {
+  variety_id: string;
+  variety_name: string;
+  self_fertile: boolean | null;
+}
+
+interface PollinationWarning {
+  varietyName: string;
+  compatiblePollinators: CompatiblePollinator[];
+}
 
 const sourceLabels: Record<string, string> = {
   trees: 'Tree',
@@ -33,11 +47,17 @@ export function AddPlantingForm({
   plotId,
   userId,
   varieties,
+  isOrchardPlot,
+  existingTreeVarietyIds,
+  treeDetails,
   trigger = 'button',
 }: {
   plotId: string;
   userId: string;
   varieties: Variety[];
+  isOrchardPlot: boolean;
+  existingTreeVarietyIds: string[];
+  treeDetails: TreeDetail[];
   trigger?: 'button' | 'empty';
 }) {
   const router = useRouter();
@@ -46,7 +66,14 @@ export function AddPlantingForm({
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<Variety | null>(null);
   const [loading, setLoading] = useState(false);
+  const [checkingPollination, setCheckingPollination] = useState(false);
+  const [pollinationWarning, setPollinationWarning] =
+    useState<PollinationWarning | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
+
+  const treeDetailById = useMemo(() => {
+    return new Map(treeDetails.map((tree) => [tree.variety_id, tree]));
+  }, [treeDetails]);
 
   const filtered = useMemo(() => {
     const trimmed = search.trim().toLowerCase();
@@ -66,7 +93,60 @@ export function AddPlantingForm({
     setSearch('');
     setSelected(null);
     setLoading(false);
+    setCheckingPollination(false);
+    setPollinationWarning(null);
     setFormError(null);
+  }
+
+  async function evaluatePollination(variety: Variety) {
+    setPollinationWarning(null);
+    setFormError(null);
+
+    if (!isOrchardPlot || variety.variety_table !== 'trees') {
+      return;
+    }
+
+    const treeDetail = treeDetailById.get(variety.variety_id);
+    if (!treeDetail || treeDetail.self_fertile !== false) {
+      return;
+    }
+
+    setCheckingPollination(true);
+
+    const supabase = createClient();
+    const compatibilityResults = await Promise.all(
+      existingTreeVarietyIds.map((existingId) =>
+        supabase.rpc('check_pollination_compatible', {
+          variety_a: variety.variety_id,
+          variety_b: existingId,
+        })
+      )
+    );
+
+    const hasCompatiblePollinator = compatibilityResults.some((result) =>
+      result.data?.some((row) => row.compatible)
+    );
+
+    if (hasCompatiblePollinator) {
+      setCheckingPollination(false);
+      return;
+    }
+
+    const { data: compatiblePollinators } = await supabase.rpc(
+      'list_compatible_pollinators',
+      { target_variety: variety.variety_id }
+    );
+
+    setPollinationWarning({
+      varietyName: treeDetail.variety_name,
+      compatiblePollinators: compatiblePollinators ?? [],
+    });
+    setCheckingPollination(false);
+  }
+
+  function selectVariety(variety: Variety) {
+    setSelected(variety);
+    void evaluatePollination(variety);
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -230,10 +310,7 @@ export function AddPlantingForm({
                             type="button"
                             size="sm"
                             variant={active ? 'primary' : 'secondary'}
-                            onClick={() => {
-                              setSelected(variety);
-                              setFormError(null);
-                            }}
+                            onClick={() => selectVariety(variety)}
                             disabled={loading}
                           >
                             {active ? 'Selected' : 'Select'}
@@ -270,6 +347,46 @@ export function AddPlantingForm({
             >
               {formError}
             </div>
+          )}
+
+          {checkingPollination && (
+            <div className="text-sm text-ink-soft bg-paper-ivory border border-stone-soft rounded-md px-3 py-2">
+              Checking pollination fit...
+            </div>
+          )}
+
+          {pollinationWarning && !checkingPollination && (
+            <DismissibleBanner
+              storageKey={null}
+              variant="warning"
+              title={`${pollinationWarning.varietyName} needs a pollinator`}
+              description="No compatible pollinator is planned in this property's orchard plots yet. You can still add it now and plant a partner nearby."
+              action={
+                pollinationWarning.compatiblePollinators.length > 0 ? (
+                  <div>
+                    <p className="text-xs font-medium text-ink-soft mb-1">
+                      Plant one of these nearby:
+                    </p>
+                    <ul className="flex flex-wrap gap-2 list-none p-0">
+                      {pollinationWarning.compatiblePollinators
+                        .slice(0, 6)
+                        .map((pollinator) => (
+                          <li
+                            key={pollinator.pollinator_variety_id}
+                            className="badge bg-cream text-ink-soft border border-stone-soft"
+                          >
+                            {pollinator.pollinator_variety_name}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <p className="text-xs text-ink-soft">
+                    No compatible pollinators are listed for this variety.
+                  </p>
+                )
+              }
+            />
           )}
 
           <div className="flex flex-col-reverse sm:flex-row gap-3 sm:justify-between pt-2">

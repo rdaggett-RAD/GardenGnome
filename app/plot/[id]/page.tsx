@@ -14,6 +14,7 @@ import { PlotDetailTabs } from './PlotDetailTabs';
 type Plot = Database['public']['Tables']['plots']['Row'];
 type Planting = Database['public']['Tables']['plantings']['Row'];
 type Variety = Database['public']['Views']['all_varieties']['Row'];
+type ExistingTreePlanting = Pick<Planting, 'variety_id' | 'variety_table'>;
 
 const categoryLabels: Record<PlotCategory, string> = {
   orchard: 'Orchard',
@@ -87,6 +88,16 @@ function buildPlantingCards(plantings: Planting[], varieties: Variety[]) {
       status: planting.status,
     };
   });
+}
+
+function buildExistingTreeIds(plantings: ExistingTreePlanting[] | null): string[] {
+  return Array.from(
+    new Set(
+      (plantings ?? [])
+        .filter((planting) => planting.variety_table === 'trees')
+        .map((planting) => planting.variety_id)
+    )
+  );
 }
 
 export default async function PlotDetailPage({
@@ -164,7 +175,37 @@ export default async function PlotDetailPage({
           .order('species', { ascending: true })
           .order('variety_name', { ascending: true });
 
+  const orchardPlotIds =
+    plot.category === 'orchard'
+      ? (
+          await supabase
+            .from('plots')
+            .select('id')
+            .eq('property_id', plot.property_id)
+            .eq('category', 'orchard')
+        ).data?.map((orchardPlot) => orchardPlot.id) ?? []
+      : [];
+
+  const { data: existingOrchardTreePlantings } =
+    orchardPlotIds.length > 0
+      ? await supabase
+          .from('plantings')
+          .select('variety_id,variety_table')
+          .in('plot_id', orchardPlotIds)
+          .eq('variety_table', 'trees')
+      : { data: [] };
+
+  const { data: treeDetails } =
+    plot.category === 'orchard'
+      ? await supabase
+          .from('trees')
+          .select('variety_id,variety_name,self_fertile')
+      : { data: [] };
+
   const plantingCards = buildPlantingCards(plantings ?? [], varieties ?? []);
+  const existingTreeVarietyIds = buildExistingTreeIds(
+    existingOrchardTreePlantings ?? []
+  );
 
   return (
     <div className="flex min-h-screen">
@@ -224,6 +265,9 @@ export default async function PlotDetailPage({
               varieties={availableVarieties ?? []}
               plotId={plot.id}
               userId={user.id}
+              isOrchardPlot={plot.category === 'orchard'}
+              existingTreeVarietyIds={existingTreeVarietyIds}
+              treeDetails={treeDetails ?? []}
             />
           )}
         </div>
