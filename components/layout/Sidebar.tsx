@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Sprout, Settings, LogOut } from 'lucide-react';
+import { Home, Sprout, Settings, LogOut, Map } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
-import { useConfirm, useToast } from '@/components/ui';
+import { Button, useConfirm, useToast } from '@/components/ui';
 
 interface NavItem {
   href: string;
@@ -15,6 +15,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },
+  { href: '/plots', label: 'Plots', icon: Map },
   { href: '/varieties', label: 'Varieties', icon: Sprout },
   { href: '/setup', label: 'Setup', icon: Settings },
 ];
@@ -90,14 +91,16 @@ export function Sidebar({ displayName }: { displayName: string | null }) {
       </nav>
 
       <div className="p-3 border-t border-stone-soft">
-        <button
-          type="button"
+        <Button
           onClick={handleSignOut}
-          className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-ink-soft hover:bg-paper-warm hover:text-ink w-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ivy"
+          variant="ghost"
+          size="sm"
+          fullWidth
+          className="justify-start"
+          leftIcon={<LogOut size={18} aria-hidden="true" />}
         >
-          <LogOut size={18} aria-hidden="true" />
           Sign out
-        </button>
+        </Button>
       </div>
     </aside>
   );
