@@ -1,7 +1,7 @@
-import { MapPin } from 'lucide-react';
+import { ArrowRight, MapPin } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { Sidebar } from '@/components/layout/Sidebar';
-import { EmptyState, ErrorState } from '@/components/ui';
+import { ButtonLink, EmptyState, ErrorState } from '@/components/ui';
 import { createClient } from '@/lib/supabase/server';
 import type { Database, PlotCategory } from '@/lib/supabase/types';
 import { AddPlotForm } from './AddPlotForm';
@@ -195,6 +195,17 @@ function PlotCard({ plot }: { plot: Plot }) {
           <dd className="font-medium text-ink">{formatSun(plot)}</dd>
         </div>
       </dl>
+
+      <div className="mt-5">
+        <ButtonLink
+          href={`/plot/${plot.id}`}
+          variant="secondary"
+          size="sm"
+          rightIcon={<ArrowRight size={16} aria-hidden="true" />}
+        >
+          Open plot
+        </ButtonLink>
+      </div>
     </article>
   );
 }
