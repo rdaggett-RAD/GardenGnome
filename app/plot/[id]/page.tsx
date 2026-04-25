@@ -4,7 +4,11 @@ import { ArrowLeft, MapPin } from 'lucide-react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { ErrorState } from '@/components/ui';
 import { createClient } from '@/lib/supabase/server';
-import type { Database, PlotCategory } from '@/lib/supabase/types';
+import type {
+  Database,
+  PlotCategory,
+  VarietySource,
+} from '@/lib/supabase/types';
 import { PlotDetailTabs } from './PlotDetailTabs';
 
 type Plot = Database['public']['Tables']['plots']['Row'];
@@ -24,6 +28,14 @@ const exposureLabels: Record<string, string> = {
   part_shade: 'Part shade',
   shade: 'Shade',
 };
+
+const varietySourceByPlotCategory: Partial<Record<PlotCategory, VarietySource>> =
+  {
+    orchard: 'trees',
+    kitchen_garden: 'kitchen_plants',
+    cut_flower_bed: 'cut_flowers',
+    field_crop: 'field_crops',
+  };
 
 function formatArea(plot: Plot): string {
   if (plot.area_sqft) return `${Number(plot.area_sqft).toLocaleString()} sq ft`;
@@ -137,6 +149,21 @@ export default async function PlotDetailPage({
       ? await supabase.from('all_varieties').select('*')
       : { data: [] };
 
+  const varietySource = varietySourceByPlotCategory[plot.category];
+  const { data: availableVarieties, error: availableVarietiesError } =
+    varietySource
+      ? await supabase
+          .from('all_varieties')
+          .select('*')
+          .eq('variety_table', varietySource)
+          .order('species', { ascending: true })
+          .order('variety_name', { ascending: true })
+      : await supabase
+          .from('all_varieties')
+          .select('*')
+          .order('species', { ascending: true })
+          .order('variety_name', { ascending: true });
+
   const plantingCards = buildPlantingCards(plantings ?? [], varieties ?? []);
 
   return (
@@ -186,8 +213,18 @@ export default async function PlotDetailPage({
               title="Couldn't load plantings"
               description={plantingsError.message}
             />
+          ) : availableVarietiesError ? (
+            <ErrorState
+              title="Couldn't load varieties"
+              description={availableVarietiesError.message}
+            />
           ) : (
-            <PlotDetailTabs plantings={plantingCards} />
+            <PlotDetailTabs
+              plantings={plantingCards}
+              varieties={availableVarieties ?? []}
+              plotId={plot.id}
+              userId={user.id}
+            />
           )}
         </div>
       </main>
